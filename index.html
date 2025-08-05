@@ -1,0 +1,6358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - KrixDev</title>
+  <!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=6">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.svg?v=6">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.svg?v=6">
+<link rel="apple-touch-icon" href="assets/favicon.svg?v=6">
+<link rel="shortcut icon" href="assets/favicon.svg?v=6">
+  <!-- Police Montserrat via Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- AOS (Animate On Scroll) CDN -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bleu: rgb(19, 143, 243);
+      --noir: #111;
+      --blanc: #fff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      min-height: 100%;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(135deg, #001c3c, #0b0f1a);
+      color: var(--blanc);
+      overflow-x: hidden;
+      overflow-y: auto; /* Permettre le scroll vertical */
+    }
+    .splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgb(10, 60, 110); /* bleu plus sombre uniquement pour le splash */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      flex-direction: column;
+      transition: none;
+    }
+    .splash__welcome {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--blanc);
+      letter-spacing: 2px;
+      min-height: 3.5rem;
+      text-align: center;
+      user-select: none;
+    }
+    .splash__loader {
+      margin-top: 2rem;
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .splash__loader-bar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0%;
+      background: var(--blanc);
+      border-radius: 2px;
+      transition: width 2.5s cubic-bezier(.4,0,.2,1);
+    }
+    .main-content {
+      min-height: 100vh;
+      width: 100vw;
+      background: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .main-content.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .header {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      padding: 2rem 2rem 1.2rem 2rem;
+      background: transparent;
+      position: relative;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--bleu);
+      letter-spacing: 2px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .nav {
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: center;
+    }
+    .nav ul {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.7rem;
+    }
+    .nav a {
+      color: var(--blanc);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav a:hover {
+      color: var(--bleu);
+    }
+    .header-btn {
+      position: static;
+      margin-left: 2rem;
+      flex: 0 0 auto;
+    }
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      gap: 6px;
+      position: absolute;
+      left: 2rem;
+      top: 2rem;
+    }
+    .burger span {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background: var(--blanc);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .home-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex: 1;
+      padding: 1rem;
+      min-height: auto;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+      margin-top: 0;
+    }
+    .home-photo-large {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .photo-moi-large {
+      width: 480px;
+      max-width: 95vw;
+      height: auto;
+      object-fit: contain;
+      border-radius: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+      display: block;
+      margin: 0 auto;
+    }
+    .home-text-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .home-title {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--blanc);
+      margin-bottom: 1.2rem;
+    }
+    .home-title span {
+      color: var(--bleu);
+    }
+    .home-subtitle {
+      font-size: 1.2rem;
+      color: var(--blanc);
+      margin-bottom: 2.2rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--bleu);
+      color: var(--blanc);
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.9rem 2.2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.08);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover {
+      background: var(--blanc);
+      color: var(--bleu);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 4px 18px rgba(19,143,243,0.13);
+    }
+    .home-bg-marquee-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 100px;
+      z-index: 4;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .home-bg-marquee {
+      width: 300vw;
+      white-space: nowrap;
+      font-size: 6vw;
+      font-weight: 400;
+      color: #fff !important;
+      opacity: 1;
+      text-transform: capitalize;
+      letter-spacing: 4px;
+      animation: marquee 18s linear infinite;
+      user-select: none;
+      filter: drop-shadow(0 0 2px #fff);
+      position: relative;
+      top: 0;
+    }
+    .home-bg-marquee span {
+      margin-right: 6vw;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100vw); }
+    }
+    @media (max-width: 900px) {
+      .home-photo-large {
+        margin-bottom: 1.2rem;
+      }
+      .circle-anim {
+        width: 300px;
+        height: 300px;
+        max-width: 70vw;
+        max-height: 70vw;
+        aspect-ratio: 1 / 1;
+      }
+    }
+    /* Responsive Design - Mobile First */
+    @media (max-width: 768px) {
+      /* Marges supplémentaires pour les sections sur mobile */
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+      
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      
+      .header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        position: relative;
+      }
+      
+      .logo {
+        font-size: 1.8rem;
+        flex: 0 0 auto;
+      }
+      
+      .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(11, 15, 26, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+      
+      .nav.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .nav ul {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0 2rem;
+        margin: 0;
+      }
+      
+      .nav a {
+        font-size: 1.1rem;
+        padding: 0.8rem 0;
+        display: block;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav a:last-child {
+        border-bottom: none;
+      }
+      
+      .burger {
+        display: flex;
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 40px;
+        height: 40px;
+        gap: 4px;
+        z-index: 1001;
+      }
+      
+      .burger span {
+        height: 3px;
+        transition: all 0.3s ease;
+      }
+      
+      .burger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+      
+      .burger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .burger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+      
+      .header-btn {
+        position: relative;
+        margin-left: 1rem;
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+      }
+      
+      .home-main {
+        padding: 1.5rem 1rem;
+        min-height: auto;
+        gap: 2rem;
+      }
+      
+      .photo-moi-large {
+        width: 280px;
+        max-width: 80vw;
+      }
+      
+      .home-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      
+      .home-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.8rem;
+        padding: 0 1rem;
+      }
+      
+      .cta-btn {
+        font-size: 1rem;
+        padding: 0.8rem 2rem;
+        min-width: 160px;
+      }
+      
+      .circle-anim {
+        width: 200px;
+        height: 200px;
+        max-width: 70vw;
+        max-height: 70vw;
+      }
+    }
+    /* Très petits écrans */
+    @media (max-width: 480px) {
+      /* Marges encore plus importantes pour très petits écrans */
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .header {
+        padding: 0.8rem 1rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      .burger {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .header-btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        margin-left: 0.5rem;
+      }
+      
+      .home-main {
+        padding: 1rem 0.8rem;
+        gap: 0;
+        min-height: auto;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+      }
+      
+      .glitch-title {
+        font-size: 1.4rem;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem;
+        margin-bottom: 0.05em;
+      }
+      
+      .glitch-animated-text {
+        font-size: 1rem;
+        text-align: center;
+        justify-content: center;
+      }
+      
+      .btn-more {
+        padding: 0.7rem 1.3rem;
+        font-size: 0.9rem;
+        margin: 0 auto;
+      }
+      
+      .photo-moi-large {
+        width: 240px;
+        max-width: 85vw;
+      }
+      
+      .home-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+      }
+      
+      .home-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        padding: 0 0.5rem;
+      }
+      
+      .cta-btn {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.8rem;
+        min-width: 140px;
+      }
+      
+      .circle-anim {
+        width: 160px;
+        height: 160px;
+        max-width: 70vw;
+        max-height: 70vw;
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .home-photo-anim-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+    }
+    .circle-anim {
+      width: 380px;
+      height: 380px;
+      max-width: 85vw;
+      max-height: 85vw;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 0 6px rgba(19,143,243,0.10);
+      overflow: hidden;
+      z-index: 2;
+      margin: 0;
+      padding: 0;
+    }
+    .circle-anim::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: -8px; right: -8px; bottom: -8px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-top: 4px solid #138ff3;
+      border-right: 4px solid #1356a3;
+      border-bottom: 4px solid #0a2747;
+      border-left: 4px solid #111;
+      animation: spinCircle 2.8s linear infinite;
+      z-index: 2;
+    }
+    @keyframes spinCircle {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes rotateGlow {
+      0% {
+        transform: rotate(0deg);
+        box-shadow: 0 0 0 8px rgba(19,143,243,0.10), 0 0 30px 0 rgba(19,143,243,0.10);
+      }
+      50% {
+        transform: rotate(180deg);
+        box-shadow: 0 0 0 18px rgba(19,143,243,0.22), 0 0 80px 20px rgba(19,143,243,0.18);
+      }
+      100% {
+        transform: rotate(360deg);
+        box-shadow: 0 0 0 8px rgba(19,143,243,0.10), 0 0 30px 0 rgba(19,143,243,0.10);
+      }
+    }
+    .circle-anim img.photo-moi-large {
+      width: 98%;
+      height: 98%;
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+      background: none;
+      box-shadow: none;
+      border: none;
+      position: relative;
+      z-index: 3;
+      display: block;
+    }
+    .lang-menu {
+      position: fixed;
+      top: 18px;
+      right: 24px;
+      z-index: 2000;
+    }
+    #langSelect {
+      padding: 7px 18px;
+      border-radius: 12px;
+      border: 2px solid #138ff3;
+      font-size: 1.08rem;
+      background: #fff;
+      color: #11345a;
+      font-weight: 600;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.08);
+      transition: border 0.2s, box-shadow 0.2s;
+      outline: none;
+      cursor: pointer;
+    }
+    #langSelect:focus {
+      border: 2px solid #0a2747;
+      box-shadow: 0 4px 18px rgba(19,143,243,0.13);
+    }
+    .lang-menu-inline {
+      display: flex;
+      align-items: center;
+      margin-left: 1.2rem;
+    }
+    @media (max-width: 700px) {
+      .lang-menu-inline {
+        margin-left: 0.5rem;
+      }
+      #langSelect {
+        font-size: 0.98rem;
+        padding: 5px 10px;
+      }
+    }
+    /* --- NAVBAR HEADER --- */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      width: 100vw;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 1.5rem 4vw;
+      background: linear-gradient(to right, #0a2a43, #0f2d4a);
+      box-shadow: 0 4px 18px rgba(10,42,67,0.13);
+      min-height: 80px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .navbar__logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      letter-spacing: 2px;
+      flex: 0 0 auto;
+    }
+    .logo-krix {
+      color: rgb(19, 143, 243);
+    }
+    .logo-dev {
+      color: #fff;
+      margin-left: 2px;
+    }
+    .navbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      margin-left: auto;
+    }
+    .navbar__burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      gap: 7px;
+      z-index: 3100;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .burger-bar {
+      display: block;
+      width: 28px;
+      height: 4px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .navbar__burger.open .burger-bar:nth-child(1) {
+      transform: translateY(11px) rotate(45deg);
+    }
+    .navbar__burger.open .burger-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .navbar__burger.open .burger-bar:nth-child(3) {
+      transform: translateY(-11px) rotate(-45deg);
+    }
+    .navbar__lang {
+      position: relative;
+    }
+    
+    .lang-selector {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .lang-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      border-radius: 6px;
+      padding: 10px 18px;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.08);
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: #11345a;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    
+    .lang-display:hover {
+      box-shadow: 0 4px 16px rgba(19,143,243,0.12);
+      transform: translateY(-1px);
+    }
+    
+    .lang-display.active {
+      box-shadow: 0 4px 16px rgba(19,143,243,0.15);
+    }
+    
+    .lang-flag {
+      display: inline-block;
+      width: 22px;
+      height: 16px;
+      background-size: cover;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+    
+    .flag-fr { background-image: url('https://flagcdn.com/fr.svg'); }
+    .flag-en { background-image: url('https://flagcdn.com/gb.svg'); }
+    .flag-es { background-image: url('https://flagcdn.com/es.svg'); }
+    
+    .lang-text {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 600;
+      color: #11345a;
+      white-space: nowrap;
+    }
+    
+    .lang-arrow {
+      font-size: 0.8rem;
+      color: #11345a;
+      transition: transform 0.2s ease;
+      margin-left: 4px;
+    }
+    
+    .lang-display.active .lang-arrow {
+      transform: rotate(180deg);
+    }
+    
+    .lang-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.2s ease;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+    
+    .lang-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    
+    .lang-option:last-child {
+      border-bottom: none;
+    }
+    
+    .lang-option:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .lang-option.selected {
+      background-color: rgba(19,143,243,0.1);
+      color: #138ff3;
+    }
+    .navbar__cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgb(19, 143, 243);
+      color: #fff;
+      width: auto;
+      height: 45px;
+      border-radius: 25px;
+      padding: 0 20px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .navbar__cta:hover {
+      background: #fff;
+      color: rgb(19, 143, 243);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    .cta-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 7px;
+      color: #fff;
+    }
+    .navbar__cta:hover .cta-icon {
+      color: rgb(19, 143, 243);
+    }
+    .cta-text {
+      display: inline;
+    }
+    /* Overlay menu */
+    .navbar__overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 42, 67, 0.98);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3050;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-30px);
+      transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .navbar__overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .navbar__overlay ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar__overlay a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 2.1rem;
+      font-weight: 700;
+      font-family: 'Montserrat', Arial, sans-serif;
+      letter-spacing: 1px;
+      transition: color 0.18s;
+      position: relative;
+    }
+    .navbar__overlay a::after {
+      content: '';
+      display: block;
+      width: 0%;
+      height: 3px;
+      background: rgb(19, 143, 243);
+      transition: width 0.22s cubic-bezier(.4,0,.2,1);
+      position: absolute;
+      left: 0; bottom: -7px;
+      border-radius: 2px;
+    }
+    .navbar__overlay a:hover {
+      color: rgb(19, 143, 243);
+    }
+    .navbar__overlay a:hover::after {
+      width: 100%;
+    }
+    
+    .navbar__overlay a.active {
+      color: rgb(19, 143, 243) !important;
+      font-weight: 800;
+      transform: translateX(15px);
+      text-shadow: 0 0 10px rgba(19, 143, 243, 0.5);
+    }
+    
+    .navbar__overlay a.active::after {
+      width: 100%;
+      background: rgb(19, 143, 243);
+      box-shadow: 0 0 15px rgba(19, 143, 243, 0.8);
+    }
+
+    /* Animation pour les liens actifs */
+    .navbar__overlay a {
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .navbar__overlay a:hover {
+      transform: translateX(10px);
+    }
+
+    /* Indicateur visuel pour le lien actif */
+    .navbar__overlay a.active::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      background: rgb(19, 143, 243);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(19, 143, 243, 0.5);
+      animation: activePulse 2s infinite;
+    }
+
+    @keyframes activePulse {
+      0%, 100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-50%) scale(1.2);
+        opacity: 0.7;
+      }
+    }
+    
+    .navbar__overlay a {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar__overlay a:hover {
+      transform: translateX(10px);
+    }
+    .navbar__close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 4000;
+      transition: color 0.18s;
+      line-height: 1;
+      padding: 0 8px;
+      display: block;
+    }
+    .navbar__close:hover {
+      color: rgb(19, 143, 243);
+    }
+    @media (max-width: 700px) {
+      .navbar__logo {
+        font-size: 1.3rem;
+        padding-left: 15px;
+      }
+      .navbar {
+        padding: 0.7rem 0;
+        justify-content: space-between;
+      }
+      .navbar__actions {
+        gap: 0.5rem;
+        padding-right: 15px;
+      }
+      .navbar__cta {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+      }
+      .navbar__cta i {
+        font-size: 1rem !important;
+      }
+      .lang-display {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        gap: 0.3rem;
+      }
+      
+      .lang-text {
+        display: none;
+      }
+      
+      .lang-arrow {
+        display: none;
+      }
+      
+      .lang-dropdown {
+        min-width: 120px;
+        right: auto;
+      }
+      .navbar__lang .lang-flag {
+        margin-right: 0;
+        width: 20px;
+        height: 15px;
+      }
+      
+      /* Bouton Me contacter encore plus réduit sur petits écrans */
+      .about-contact-btn {
+        padding: 0.5em 1.3em;
+        font-size: 0.9rem;
+        gap: 0.4em;
+      }
+      
+      .about-contact-btn .phone-icon {
+        font-size: 1em;
+      }
+      
+      .navbar__close {
+        top: 12px;
+        right: 12px;
+        font-size: 2rem;
+      }
+    }
+    body.menu-open {
+      overflow: hidden;
+    }
+    .glitch-layout {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: auto;
+      gap: 1.5rem;
+    }
+    .glitch-img-col {
+      flex: 0 0 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+    }
+    .glitch-img-col .circle-anim {
+      width: 360px;
+      height: 360px;
+      max-width: 80vw;
+      max-height: 80vw;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+    }
+    .glitch-img-col img.photo-moi-large {
+      width: 98%;
+      height: 98%;
+      object-fit: contain;
+      border-radius: 50%;
+      background: none;
+      box-shadow: none;
+      border: none;
+      position: relative;
+      z-index: 3;
+    }
+    .glitch-text-col {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      min-width: 220px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+      width: 100%;
+      text-align: left;
+    }
+    
+    /* Styles responsives simplifiés */
+    @media (max-width: 900px) {
+      .glitch-layout {
+        flex-direction: column;
+        gap: 0;
+        min-height: auto;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      
+      .glitch-img-col {
+        display: none !important;
+      }
+      
+      .glitch-text-col {
+        margin: 0;
+        padding: 0 0 0 1rem;
+        text-align: left !important;
+        align-items: flex-start !important;
+        justify-content: center;
+        transform: none;
+        width: 100%;
+        max-width: 600px;
+      }
+      
+      .glitch-title {
+        font-size: 2.2rem !important;
+        margin-bottom: 0.5em;
+        margin-left: 0.5rem;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        line-height: 1.3;
+      }
+      
+      .glitch-animated-text {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.6em;
+        margin-left: 0.5rem;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        line-height: 1.3;
+      }
+      
+      .btn-more {
+        font-size: 1.1rem !important;
+        padding: 0.8rem 1.6rem !important;
+        margin-top: 0.5rem;
+        margin-left: 0.5rem !important;
+        margin-right: auto !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .glitch-layout {
+        gap: 0;
+        padding: 0 1rem;
+      }
+      
+      .glitch-text-col {
+        max-width: 100%;
+      }
+      
+      .glitch-title {
+        
+        margin-bottom: 0.5em;
+        text-align: left;
+        justify-content: flex-start;
+        line-height: 1.3;
+      }
+      
+      .glitch-animated-text {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.6em;
+        text-align: left;
+        justify-content: flex-start;
+        line-height: 1.3;
+      }
+      
+      .btn-more {
+        font-size: 1rem !important;
+        padding: 0.7rem 1.4rem !important;
+        margin-top: 0.8rem;
+      }
+    }
+    .glitch-text-col.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    @media (max-width: 900px) {
+      .glitch-text-col.visible {
+        transform: none;
+        opacity: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: left;
+      }
+    }
+    .glitch-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--blanc);
+      margin-bottom: 0.2em;
+      letter-spacing: 1px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      text-shadow: 0 2px 12px rgba(19,143,243,0.18);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      width: 100%;
+      justify-content: flex-start;
+      text-align: left;
+    }
+    .glitch-title span {
+      color: var(--bleu);
+    }
+    .glitch-title .glitch-title-icon {
+      width: 2.1rem;
+      height: 2.1rem;
+      margin-right: 0.5rem;
+      color: var(--bleu);
+      display: inline-flex;
+      vertical-align: middle;
+    }
+    .glitch-animated-text {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #138ff3;
+      position: relative;
+      letter-spacing: 1.5px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 2.5em;
+      line-height: 1.1;
+      user-select: none;
+      text-transform: none;
+      display: flex;
+      align-items: center;
+      margin-top: 0.1em;
+      margin-bottom: 0.3em;
+      filter: brightness(1.2) contrast(1.1);
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+      width: 100%;
+      justify-content: flex-start;
+      text-align: left;
+    }
+    .glitch-animated-text.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .glitch-animated-icon {
+      width: 2.6rem;
+      height: 2.6rem;
+      margin-left: 0.1em;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bleu);
+      filter: drop-shadow(0 2px 8px rgba(19,143,243,0.10));
+    }
+
+    /* Animation uniquement sur la bordure du cercle autour de l'image */
+    .circle-anim {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 360px;
+      height: 360px;
+      max-width: 80vw;
+      max-height: 80vw;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+    }
+    .circle-anim::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border-radius: 50%;
+      border: 6px solid transparent;
+      border-top: 6px solid var(--bleu);
+      border-right: 6px solid #fff;
+      border-bottom: 6px solid var(--bleu);
+      border-left: 6px solid #fff;
+      z-index: 1;
+      pointer-events: none;
+      animation: borderSpin 2.8s linear infinite;
+    }
+    @keyframes borderSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .circle-anim img.photo-moi-large {
+      position: relative;
+      z-index: 2;
+    }
+    .bubbles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      border-radius: 50%;
+      opacity: 0.45;
+      background: linear-gradient(135deg, #138ff3 60%, #fff 100%);
+      filter: blur(0.5px);
+      animation: bubbleUp 9s linear infinite;
+    }
+    @keyframes bubbleUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.45;
+      }
+      80% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.12);
+        opacity: 0;
+      }
+    }
+    .btn-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: rgb(19, 143, 243);
+      color: #fff;
+      font-size: 1.08rem;
+      font-weight: 700;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      margin-top: 0.4em;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 10;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .btn-more:hover {
+      background: #fff;
+      color: rgb(19, 143, 243);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    .arrow-down {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 0.5rem;
+      animation: arrowBounce 1.2s infinite;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .social-icons-fixed {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      z-index: 3001;
+    }
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: transform 0.18s, box-shadow 0.18s;
+      text-decoration: none;
+      font-size: 1.3rem;
+    }
+    .social-icon:hover {
+      transform: scale(1.13) translateY(-2px);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    /* Responsive pour les éléments fixes */
+    @media (max-width: 1024px) {
+      .social-icons-fixed {
+        right: 20px;
+        bottom: 20px;
+        gap: 0.9rem;
+      }
+      
+      .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+      }
+      
+      .krixbot-btn {
+        left: 20px;
+        bottom: 20px;
+        padding: 11px 15px;
+        font-size: 0.85rem;
+        gap: 7px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .social-icons-fixed {
+        right: 15px;
+        bottom: 15px;
+        gap: 0.8rem;
+      }
+      
+      .social-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+      }
+      
+      .krixbot-btn {
+        left: 15px;
+        bottom: 15px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        gap: 6px;
+      }
+      
+      /* Header mobile pour écrans moyens */
+      .navbar__logo {
+        font-size: 1.4rem;
+        padding-left: 18px;
+      }
+      
+      .navbar__actions {
+        padding-right: 18px;
+        gap: 0.6rem;
+      }
+      
+      .navbar__cta {
+        width: auto;
+        height: 40px;
+        font-size: 0.85rem;
+        padding: 0 15px;
+        border-radius: 20px;
+      }
+      
+      .navbar__cta i {
+        font-size: 1rem !important;
+      }
+      
+      .lang-display {
+        padding: 7px 11px;
+        font-size: 0.92rem;
+        gap: 0.35rem;
+      }
+      
+      .navbar__lang .lang-flag {
+        width: 21px;
+        height: 16px;
+      }
+      
+      /* Sections optimisées pour écrans moyens */
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding: 70px 0 50px 0;
+        min-height: auto;
+      }
+      
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        gap: 1.8rem;
+        padding: 0 1.5rem;
+      }
+      
+      /* Bouton Me contacter réduit sur mobile */
+      .about-contact-btn {
+        padding: 0.6em 1.5em;
+        font-size: 0.95rem;
+        gap: 0.5em;
+      }
+      
+      .about-contact-btn .phone-icon {
+        font-size: 1.1em;
+      }
+      
+      /* Tech circles réduits sur mobile */
+      .tech-circle {
+        width: 75px;
+        height: 75px;
+        padding: 4px 0 3px 0;
+      }
+      
+      .tech-circle i {
+        font-size: 1.2em;
+        margin-bottom: 0.2em;
+      }
+      
+      .tech-circle span {
+        font-size: 0.85em;
+      }
+      
+      .about-tech-circles {
+        gap: 1.5rem;
+      }
+      
+      /* Sections plus compactes sur mobile */
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding: 60px 0 40px 0;
+        min-height: auto;
+      }
+      
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .social-icons-fixed {
+        right: 12px;
+        bottom: 12px;
+        gap: 0.6rem;
+      }
+      
+      .social-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+      
+      .krixbot-btn {
+        left: 12px;
+        bottom: 12px;
+        padding: 9px 12px;
+        font-size: 0.75rem;
+        gap: 5px;
+      }
+      
+      /* Header mobile optimisé pour très petits écrans */
+      .navbar__logo {
+        font-size: 1.2rem;
+        padding-left: 12px;
+      }
+      
+      .navbar__actions {
+        padding-right: 12px;
+        gap: 0.4rem;
+      }
+      
+      .navbar__cta {
+        width: auto;
+        height: 35px;
+        font-size: 0.75rem;
+        padding: 0 12px;
+        border-radius: 17px;
+      }
+      
+      .navbar__cta i {
+        font-size: 0.85rem !important;
+      }
+      
+      .lang-display {
+        padding: 5px 8px;
+        font-size: 0.85rem;
+        gap: 0.2rem;
+      }
+      
+      .lang-text {
+        display: none;
+      }
+      
+      .lang-arrow {
+        display: none;
+      }
+      
+      .lang-dropdown {
+        min-width: 100px;
+        right: auto;
+      }
+      
+      .navbar__lang .lang-flag {
+        margin-right: 0;
+        width: 18px;
+        height: 13px;
+      }
+      
+      /* Bouton Me contacter très réduit sur très petits écrans */
+      .about-contact-btn {
+        padding: 0.4em 1.1em;
+        font-size: 0.85rem;
+        gap: 0.3em;
+      }
+      
+      .about-contact-btn .phone-icon {
+        font-size: 0.95em;
+      }
+      
+      /* Tech circles réduits sur très petits écrans */
+      .tech-circle {
+        width: 65px;
+        height: 65px;
+        padding: 3px 0 2px 0;
+      }
+      
+      .tech-circle i {
+        font-size: 1.1em;
+        margin-bottom: 0.15em;
+      }
+      
+      .tech-circle span {
+        font-size: 0.8em;
+      }
+      
+      .about-tech-circles {
+        gap: 1.2rem;
+      }
+      
+      /* Sections très compactes sur petits écrans */
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding: 50px 0 30px 0;
+        min-height: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        gap: 1.2rem;
+        padding: 0 0.8rem;
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+      }
+    }
+    .krixbot-btn {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      z-index: 3001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 25px;
+      background: #fff;
+      color: #138ff3;
+      border: none;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Montserrat', Arial, sans-serif;
+      white-space: nowrap;
+      min-width: fit-content;
+    }
+
+    .krixbot-btn:hover {
+      transform: scale(1.13) translateY(-2px);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+
+
+
+
+
+
+    @media (max-width: 700px) {
+      .krixbot-btn {
+        left: 10px;
+        bottom: 10px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        gap: 6px;
+      }
+
+    }
+    .about-section {
+      width: 100vw;
+      min-height: auto;
+      background: linear-gradient(135deg, #0b0f1a 80%, #001c3c 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 0 60px 0;
+      margin-top: 0;
+    }
+    .about-container {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2.2rem;
+      padding: 0 2rem;
+    }
+    .about-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--blanc);
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+      text-align: left;
+      font-family: 'Montserrat', Arial, sans-serif;
+      position: relative;
+      align-self: flex-start;
+    }
+    .about-title::after {
+      content: '';
+      display: block;
+      width: 110px;
+      height: 7px;
+      background: var(--bleu);
+      border-radius: 4px;
+      margin-top: 0.22em;
+      margin-left: 0;
+    }
+    .about-card {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-left: 0;
+    }
+    .about-text {
+      font-size: 1.18rem;
+      color: var(--blanc);
+      text-align: justify;
+      max-width: 700px;
+      line-height: 1.7;
+      margin-bottom: 1.em;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .about-tech-circles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.1rem;
+      justify-content: center;
+      margin-top: 0.5em;
+    }
+    .about-tech-title {
+      color: #6ec1ff;
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 1.1em;
+      text-align: left;
+      letter-spacing: 1px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      align-self: flex-start;
+      margin-left: 0;
+      display: flex;
+      align-items: center;
+      gap: 1.1em;
+    }
+    .about-tech-title .subtitle-line {
+      display: inline-flex;
+      align-items: center;
+      height: 5px;
+      width: 340px;
+      background: var(--bleu);
+      border-radius: 3px;
+      margin-left: 0.5em;
+      vertical-align: middle;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .about-tech-title .subtitle-line::before {
+      content: '';
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--bleu);
+      margin-right: 8px;
+      margin-left: 0;
+    }
+    .about-tech-title .subtitle-line::after {
+      content: '';
+      display: inline-block;
+      height: 5px;
+      width: 320px;
+      background: var(--bleu);
+      border-radius: 3px;
+    }
+    .tech-circle {
+      background: rgba(255,255,255,0.13);
+      border-radius: 50%;
+      width: 85px;
+      height: 85px;
+      padding: 6px 0 5px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 16px rgba(19,143,243,0.13);
+      margin-bottom: 0.2em;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      position: relative;
+      cursor: pointer;
+      border: 2.5px solid rgba(19,143,243,0.13);
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      animation: techFadeIn 0.7s cubic-bezier(.4,0,.2,1) forwards, techPulse 2.2s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes techPulse {
+      0% { box-shadow: 0 2px 16px rgba(19,143,243,0.13), 0 0 0 0 rgba(19,143,243,0.13); transform: scale(1); }
+      50% { box-shadow: 0 8px 32px rgba(19,143,243,0.18), 0 0 16px 6px rgba(19,143,243,0.10); transform: scale(1.045); }
+      100% { box-shadow: 0 2px 16px rgba(19,143,243,0.13), 0 0 0 0 rgba(19,143,243,0.13); transform: scale(1); }
+    }
+    .tech-circle:nth-child(1) { animation-delay: 0.05s; }
+    .tech-circle:nth-child(2) { animation-delay: 0.13s; }
+    .tech-circle:nth-child(3) { animation-delay: 0.21s; }
+    .tech-circle:nth-child(4) { animation-delay: 0.29s; }
+    .tech-circle:nth-child(5) { animation-delay: 0.37s; }
+    .tech-circle:nth-child(6) { animation-delay: 0.45s; }
+    @keyframes techFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .tech-circle:hover {
+      transform: translateY(-8px) scale(1.13) rotate(-3deg);
+      box-shadow: 0 12px 36px rgba(19,143,243,0.22);
+      background: rgba(19,143,243,0.13);
+      border-color: var(--bleu);
+      transition: transform 0.18s cubic-bezier(.4,1.6,.2,1), box-shadow 0.18s, background 0.18s;
+    }
+    .tech-circle i {
+      font-size: 1.5em;
+      margin-bottom: 0.3em;
+      filter: drop-shadow(0 2px 8px rgba(19,143,243,0.10));
+    }
+    .tech-circle span {
+      font-size: 1.01em;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 0.2em;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .hero-section {
+      width: 100vw;
+      min-height: auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      position: relative;
+      background: none;
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+    .main-content {
+      min-height: 100vh;
+      width: 100vw;
+      background: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .main-content.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .about-subtitle {
+      color: #6ec1ff;
+      font-size: 1.13rem;
+      font-weight: 700;
+      margin-bottom: 0.12em;
+      text-align: left;
+      align-self: flex-start;
+      font-family: 'Montserrat', Arial, sans-serif;
+      letter-spacing: 1px;
+      margin-left: 0;
+    }
+    .about-subtitle .subtitle-line {
+      display: inline-flex;
+      align-items: center;
+      height: 5px;
+      width: 180px;
+      background: var(--bleu);
+      border-radius: 3px;
+      margin-left: 0.5em;
+      vertical-align: middle;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .about-subtitle .subtitle-line::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bleu);
+      border: 3px solid #fff;
+      margin-right: 10px;
+      margin-left: 0;
+      box-shadow: 0 0 0 2px var(--bleu);
+    }
+    .about-subtitle .subtitle-line::after {
+      content: '';
+      display: inline-block;
+      height: 5px;
+      width: 160px;
+      background: #fff;
+      border-radius: 3px;
+    }
+    .about-tech-title {
+      font-size: 1.01rem;
+      margin-bottom: 0.7em;
+      align-self: flex-start;
+    }
+    .about-tech-title .subtitle-line {
+      display: inline-flex;
+      align-items: center;
+      height: 5px;
+      width: 180px;
+      background: var(--bleu);
+      border-radius: 3px;
+      margin-left: 0.5em;
+      vertical-align: middle;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .about-tech-title .subtitle-line::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bleu);
+      border: 3px solid #fff;
+      margin-right: 10px;
+      margin-left: 0;
+      box-shadow: 0 0 0 2px var(--bleu);
+      vertical-align: middle;
+    }
+    .about-tech-title .subtitle-line::after {
+      content: '';
+      display: inline-block;
+      height: 5px;
+      width: 160px;
+      background: #fff;
+      border-radius: 3px;
+    }
+    .about-contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      margin: 0.4em 0 2.2em 0;
+      padding: 0.85em 2.2em;
+      background: var(--bleu);
+      color: #fff;
+      font-size: 1.08rem;
+      border: none;
+      font-weight: 700;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(19, 143, 243, 0.10);
+      transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+      font-family: 'Montserrat', Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .about-contact-btn:hover {
+      background: #fff;
+      color: var(--bleu);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    .about-contact-btn .phone-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.18em;
+      margin-right: 0.2em;
+      animation: phoneVibrate 0.7s infinite linear;
+    }
+    @keyframes phoneVibrate {
+      0% { transform: rotate(0deg); }
+      15% { transform: rotate(-18deg); }
+      30% { transform: rotate(16deg); }
+      45% { transform: rotate(-12deg); }
+      60% { transform: rotate(9deg); }
+      75% { transform: rotate(-6deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .services-section {
+      width: 100vw;
+      min-height: auto;
+      background: linear-gradient(135deg, #0b0f1a 80%, #001c3c 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 0 60px 0;
+    }
+    .services-container {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.2rem;
+      padding: 0 2rem;
+    }
+    .services-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.1rem;
+      justify-content: center;
+      align-items: start;
+      margin-top: 0.5em;
+      width: 100%;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .service-card {
+      background: rgba(19,143,243,0.10);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 340px;
+      min-height: 340px;
+      padding: 3.2rem 2.2rem 2.8rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      box-shadow: 0 8px 32px rgba(19,143,243,0.13), 0 1.5px 8px rgba(0,0,0,0.07);
+      margin-bottom: 0.2em;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      position: relative;
+      cursor: pointer;
+      border: none;
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .service-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 16px 48px rgba(19,143,243,0.22);
+      background: rgba(19,143,243,0.18);
+    }
+    .service-icon {
+      font-size: 2.8rem;
+      color: var(--bleu);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      background: rgba(255,255,255,0.13);
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+    }
+    .service-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--blanc);
+      margin-bottom: 0.7rem;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+    .service-desc {
+      font-size: 1.08rem;
+      color: #e3eaf2;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .service-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      margin-top: 1.2em;
+      margin-bottom: 0.5em;
+      padding: 0.7em 1.7em;
+      background: var(--bleu);
+      color: #fff;
+      font-size: 1.03rem;
+      font-weight: 700;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+      font-family: 'Montserrat', Arial, sans-serif;
+      letter-spacing: 0.5px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .service-cta:hover {
+      background: #fff;
+      color: var(--bleu);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    .service-cta .devis-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.13em;
+      margin-right: 0.2em;
+      animation: phoneVibrate 0.7s infinite linear;
+    }
+    /* Responsive pour les sections de contenu */
+    @media (max-width: 1024px) {
+      .services-section,
+      .realisations-section,
+      .testimonials-section {
+        padding: 60px 0 40px 0;
+      }
+      
+      .services-container,
+      .realisations-container,
+      .testimonials-container {
+        padding: 0 1.5rem;
+        gap: 1.8rem;
+      }
+      
+      .services-cards {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.8rem;
+      }
+      
+      .service-card {
+        max-width: 320px;
+        min-height: 320px;
+        padding: 2.6rem 1.8rem 2.2rem 1.8rem;
+      }
+      
+      .services-title,
+      .realisations-title,
+      .testimonials-title {
+        font-size: 2.2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .services-section,
+      .realisations-section,
+      .testimonials-section {
+        padding: 50px 0 30px 0;
+      }
+      
+      .services-container,
+      .realisations-container,
+      .testimonials-container {
+        padding: 0 1rem;
+        gap: 1.5rem;
+      }
+      
+      .services-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      
+      .service-card {
+        max-width: 100%;
+        min-height: auto;
+        padding: 2.4rem 1.5rem 2rem 1.5rem;
+      }
+      
+      .service-icon {
+        font-size: 2.4rem;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+      }
+      
+      .service-name {
+        font-size: 1.2rem;
+        margin-bottom: 0.6rem;
+      }
+      
+      .service-desc {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+      }
+      
+      .services-title,
+      .realisations-title,
+      .testimonials-title {
+        font-size: 1.8rem;
+        text-align: center;
+        align-self: center;
+      }
+      
+      .services-title::after {
+        margin: 0.2em auto 0 auto;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .services-section,
+      .realisations-section,
+      .testimonials-section {
+        padding: 40px 0 25px 0;
+      }
+      
+      .services-container,
+      .realisations-container,
+      .testimonials-container {
+        padding: 0 0.8rem;
+        gap: 1.2rem;
+      }
+      
+      .services-cards {
+        gap: 1.2rem;
+      }
+      
+      .service-card {
+        padding: 1.8rem 1.2rem 1.2rem 1.2rem;
+      }
+      
+      .service-icon {
+        font-size: 2.2rem;
+        width: 55px;
+        height: 55px;
+        margin-bottom: 0.8rem;
+      }
+      
+      .service-name {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .service-desc {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+      
+      .services-title,
+      .realisations-title,
+      .testimonials-title {
+        font-size: 1.6rem;
+      }
+      
+      /* Carousel d'avis clients - Mobile */
+      .testimonials-carousel {
+        padding: 1rem 0;
+        overflow: visible;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        min-height: 350px;
+      }
+      
+      .carousel-track {
+        gap: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        transition: none;
+        transform: none !important;
+        height: 100%;
+      }
+      
+      .testimonial-card {
+        min-width: 280px;
+        max-width: 320px;
+        padding: 1.8rem 1.2rem 1.5rem 1.2rem;
+        margin: 0 auto;
+        flex-shrink: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1) !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+        pointer-events: none;
+      }
+      
+      .testimonial-card.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      
+      .testimonial-avatar-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 12px;
+      }
+      
+      .testimonial-avatar-icon i {
+        font-size: 1.4rem;
+      }
+      
+      .testimonial-stars i {
+        font-size: 1rem;
+      }
+      
+      .testimonial-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      
+      .testimonial-name {
+        font-size: 1rem;
+      }
+      
+      /* Modal de devis - Mobile */
+      .devis-modal-content {
+        padding: 1.5rem;
+        max-width: 90%;
+      }
+      
+      .devis-modal-header h3 {
+        font-size: 1.3rem;
+      }
+      
+      .devis-option {
+        padding: 1rem;
+      }
+      
+      .devis-option-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        margin-right: 0.8rem;
+      }
+      
+      .devis-option-content h4 {
+        font-size: 1rem;
+      }
+      
+      .devis-option-content p {
+        font-size: 0.8rem;
+      }
+    }
+    
+    /* Modal de devis - Très petits écrans */
+    @media (max-width: 480px) {
+      .devis-modal-content {
+        padding: 1rem;
+        max-width: 95%;
+      }
+      
+      .devis-modal-header h3 {
+        font-size: 1.1rem;
+      }
+      
+      .devis-option {
+        padding: 0.8rem;
+      }
+      
+      .devis-option-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+        margin-right: 0.6rem;
+      }
+      
+      .devis-option-content h4 {
+        font-size: 0.9rem;
+      }
+      
+      .devis-option-content p {
+        font-size: 0.75rem;
+      }
+    }
+    .service-examples {
+      list-style: none;
+      margin: 0.7em 0 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      align-items: flex-start;
+    }
+    .service-examples li {
+      display: flex;
+      align-items: center;
+      font-size: 1.01rem;
+      color: #e3eaf2;
+      gap: 0.6em;
+    }
+    .service-examples .check-icon {
+      color: #25D366;
+      font-size: 1.13em;
+      margin-right: 0.2em;
+      flex-shrink: 0;
+    }
+    .service-price {
+      font-size: 1.01rem;
+      color: #27ae60;
+      font-weight: 700;
+      margin-bottom: 0.5em;
+      margin-top: 0.5em;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .service-note {
+      font-size: 0.98rem;
+      color: #b6c7e0;
+      margin-top: 0.7em;
+      text-align: center;
+      line-height: 1.5;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .services-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--blanc);
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+      text-align: left;
+      font-family: 'Montserrat', Arial, sans-serif;
+      position: relative;
+      align-self: flex-start;
+    }
+    .services-title::after {
+      content: '';
+      display: block;
+      width: 110px;
+      height: 7px;
+      background: var(--bleu);
+      border-radius: 4px;
+      margin-top: 0.22em;
+      margin-left: 0;
+    }
+    .realisations-section {
+      width: 100vw;
+      min-height: auto;
+      background: linear-gradient(135deg, #0b0f1a 80%, #001c3c 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 0 60px 0;
+    }
+    .realisations-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.2rem;
+      padding: 0 2rem;
+    }
+    .realisations-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--blanc);
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+      text-align: left;
+      font-family: 'Montserrat', Arial, sans-serif;
+      position: relative;
+      align-self: flex-start;
+    }
+    .realisations-title::after {
+      content: '';
+      display: block;
+      width: 110px;
+      height: 7px;
+      background: var(--bleu);
+      border-radius: 4px;
+      margin-top: 0.22em;
+      margin-left: 0;
+    }
+    .realisations-filters {
+      display: flex;
+      gap: 1.1rem;
+      margin-bottom: 2.2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+    .filter-btn {
+      background: #111b2a;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.85em 2.2em;
+      font-size: 1.08rem;
+      font-weight: 700;
+      font-family: 'Montserrat', Arial, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(19,143,243,0.10);
+      transition: background 0.18s, color 0.18s, transform 0.18s;
+      outline: none;
+      white-space: nowrap;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--bleu);
+      color: #fff;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(19,143,243,0.18);
+    }
+    .realisations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-items: center;
+      align-items: stretch;
+    }
+    @media (max-width: 1000px) {
+      .realisations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .realisations-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+    }
+    .real-card {
+      position: relative;
+      width: 100%;
+      max-width: 370px;
+      min-height: 340px;
+      aspect-ratio: 1/1.1;
+      background: #1a2333;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(19,143,243,0.13), 0 1.5px 8px rgba(0,0,0,0.13);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      transform: perspective(900px) rotateY(-7deg) scale(1);
+      transition: transform 0.45s cubic-bezier(.4,0,.2,1), box-shadow 0.35s, z-index 0.2s;
+      z-index: 1;
+    }
+    .real-card:hover {
+      transform: perspective(900px) rotateY(0deg) scale(1.045) translateY(-10px);
+      box-shadow: 0 16px 48px rgba(19,143,243,0.22), 0 8px 32px rgba(0,0,0,0.18);
+      z-index: 10;
+    }
+    .real-card-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+      filter: brightness(0.92) contrast(1.08);
+      transition: filter 0.3s;
+    }
+    .real-card:hover .real-card-bg {
+      filter: brightness(1.04) contrast(1.13);
+    }
+    .real-card-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(180deg, rgba(10,20,40,0.68) 60%, rgba(19,143,243,0.13) 100%);
+      opacity: 0.82;
+      z-index: 2;
+      transition: opacity 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .real-card:hover .real-card-overlay {
+      opacity: 0.62;
+    }
+    .real-card-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      padding: 1.2em 1.3em 1.3em 1.3em;
+    }
+    .real-card-badges {
+      position: absolute;
+      left: 1.3em;
+      bottom: 4.7em;
+      display: flex;
+      gap: 0.5em;
+      flex-wrap: wrap;
+      z-index: 4;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.32em 1.1em;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(19, 143, 243, 0.22);
+      margin-bottom: 0.2em;
+      letter-spacing: 0.5px;
+      box-shadow: 0 1.5px 8px rgba(19, 143, 243, 0.07);
+      transition: background 0.18s, color 0.18s;
+    }
+    .badge.html { background: linear-gradient(90deg, #e44d26 60%, #f16529 100%); }
+    .badge.css { background: linear-gradient(90deg, #1572b6 60%, #33a9dc 100%); }
+    .badge.js { background: linear-gradient(90deg, #f7df1e 60%, #ffe484 100%); color: #222; }
+    .badge.react { background: linear-gradient(90deg, #61dafb 60%, #21a1f3 100%); color: #222; }
+    .badge.flutter { background: linear-gradient(90deg, #3DDC84 60%, #00BFAE 100%); }
+    .badge.firebase { background: linear-gradient(90deg, #FFA000 60%, #FFCA28 100%); color: #222; }
+    .badge.figma { background: linear-gradient(90deg, #a259ff 60%, #f24e1e 100%); }
+    .badge.ui, .badge.ux { background: linear-gradient(90deg, #6ec1ff 60%, #138ff3 100%); }
+    .badge.dart { background: linear-gradient(90deg, #0175C2 60%, #13B9FD 100%); }
+    .real-card-info {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: auto;
+      gap: 1.1em;
+    }
+    .real-card-cat {
+      font-size: 1.01em;
+      color: #6ec1ff;
+      font-weight: 700;
+      margin-bottom: 0.2em;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1.5px 8px rgba(19,143,243,0.07);
+    }
+    .real-card-title {
+      font-size: 1.18em;
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 0.2em;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1.5px 8px rgba(19,143,243,0.07);
+      flex: 1 1 auto;
+      margin-right: 0.7em;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .real-card-link {
+      color: #fff;
+      font-size: 1.3em;
+      background: rgba(19,143,243,0.22);
+      border-radius: 50%;
+      width: 2.2em;
+      height: 2.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.18s, color 0.18s, transform 0.18s;
+      margin-left: 0.2em;
+      text-decoration: none;
+    }
+    .real-card-link:hover {
+      background: var(--bleu);
+      color: #fff;
+      transform: scale(1.13);
+    }
+    /* Animation d'apparition (optionnel) */
+    .real-card {
+      opacity: 0;
+      transform: perspective(900px) rotateY(-7deg) scale(0.97) translateY(30px);
+      animation: realCardAppear 0.8s cubic-bezier(.4,0,.2,1) forwards;
+    }
+    .real-card:nth-child(1) { animation-delay: 0.05s; }
+    .real-card:nth-child(2) { animation-delay: 0.13s; }
+    .real-card:nth-child(3) { animation-delay: 0.21s; }
+    .real-card:nth-child(4) { animation-delay: 0.29s; }
+    .real-card:nth-child(5) { animation-delay: 0.37s; }
+    .real-card:nth-child(6) { animation-delay: 0.45s; }
+    @keyframes realCardAppear {
+      to {
+        opacity: 1;
+        transform: perspective(900px) rotateY(-7deg) scale(1) translateY(0);
+      }
+    }
+    .badge.java { background: linear-gradient(90deg, #e76f00 60%, #ffb366 100%); }
+    .badge.xml { background: linear-gradient(90deg, #8e24aa 60%, #ce93d8 100%); }
+    .badge i {
+      margin-right: 0.5em;
+      font-size: 1em;
+      vertical-align: middle;
+    }
+    .badge.php { background: linear-gradient(90deg, #777bb4 60%, #4F5B93 100%); }
+    .badge.figma { background: linear-gradient(90deg, #a259ff 60%, #f24e1e 100%); }
+    .badge.ui { background: linear-gradient(90deg, #6ec1ff 60%, #138ff3 100%); }
+    .badge.ux { background: linear-gradient(90deg, #138ff3 60%, #0a2747 100%); }
+    /* --- MODAL PROJET --- */
+    .modal-projet {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(10,20,40,0.88);
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.25s;
+    }
+    .modal-projet.open {
+      display: flex;
+      animation: modalFadeIn 0.3s;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .modal-projet-content {
+      background: #181f2a;
+      border-radius: 18px;
+      padding: 2.2em 2.2em 1.5em 2.2em;
+      box-shadow: 0 8px 32px rgba(19,143,243,0.18);
+      max-width: 95vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      color: #fff;
+      min-width: 320px;
+    }
+    .modal-projet-img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 12px;
+      margin-bottom: 1.2em;
+      box-shadow: 0 4px 24px rgba(19,143,243,0.13);
+      object-fit: contain;
+      background: #222;
+    }
+    .modal-projet-close {
+      position: absolute;
+      top: 18px; right: 22px;
+      font-size: 2.2em;
+      color: #fff;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.18s;
+    }
+    .modal-projet-close:hover {
+      color: var(--bleu);
+    }
+    .modal-projet h3 {
+      font-size: 1.5em;
+      font-weight: 800;
+      margin-bottom: 0.7em;
+      color: var(--bleu);
+      text-align: center;
+    }
+    .modal-projet p {
+      font-size: 1.08em;
+      color: #e3eaf2;
+      text-align: center;
+      margin-bottom: 0.5em;
+    }
+    .last-section {
+      padding-bottom: 0;
+    }
+    .footer-integrated {
+      background: inherit;
+      border: none;
+      margin-top: auto;
+      padding: 2rem 0 1rem 0;
+      text-align: center;
+      font-size: 1.08rem;
+      color: #b6c7e0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+    .footer-integrated::before {
+      content: "";
+      width: 70%;
+      max-width: 70vw;
+      margin: 0 auto 2rem auto;
+      height: 2.5px;
+      background: rgba(255,255,255,0.13);
+      display: block;
+    }
+    .modal-projet-desc, #modalProjetDesc {
+      max-width: 420px;
+      width: 90%;
+      margin: 0 auto;
+      text-align: justify;
+      line-height: 2.1;
+      font-size: 1.08em;
+      letter-spacing: 0.01em;
+      word-break: break-word;
+    }
+    .modal-projet-btn-close {
+      display: inline-block;
+      margin: 2.2em auto 0 auto;
+      padding: 0.8em 2.2em;
+      background: #138ff3;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.08em;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, transform 0.18s;
+    }
+    .modal-projet-btn-close:hover {
+      background: #fff;
+      color: #138ff3;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .modal-projet-badges .badge i,
+    .modal-projet-content .badge i {
+      font-size: 0.85em !important;
+      min-width: 0;
+      min-height: 0;
+      line-height: 1;
+    }
+
+    /* --- SECTION AVIS CLIENTS --- */
+    .testimonials-section {
+      width: 100vw;
+      min-height: auto;
+      background: linear-gradient(135deg, #0b0f1a 80%, #001c3c 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 0 60px 0;
+    }
+    
+    .testimonials-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+      padding: 0 2rem;
+    }
+    
+    .testimonials-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--blanc);
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+      text-align: left;
+      font-family: 'Montserrat', Arial, sans-serif;
+      position: relative;
+      align-self: flex-start;
+    }
+    
+    .testimonials-title::after {
+      content: '';
+      display: block;
+      width: 110px;
+      height: 7px;
+      background: var(--bleu);
+      border-radius: 4px;
+      margin-top: 0.22em;
+      margin-left: 0;
+    }
+    
+    .testimonials-carousel {
+      width: 100%;
+      max-width: 1000px;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 0;
+    }
+    
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+    
+    .testimonial-card {
+      min-width: 380px;
+      max-width: 450px;
+      background: linear-gradient(145deg, rgba(19, 143, 243, 0.12), rgba(19, 143, 243, 0.08));
+      border-radius: 20px;
+      padding: 2.5rem 2rem 2rem 2rem;
+      box-shadow: 
+        0 8px 32px rgba(19, 143, 243, 0.15),
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(19, 143, 243, 0.2);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+      position: relative;
+      opacity: 0.7;
+      transform: scale(0.9) perspective(1000px) rotateY(-5deg);
+      filter: blur(2px);
+      backdrop-filter: blur(10px);
+    }
+    
+    .testimonial-card.active {
+      opacity: 1;
+      transform: scale(1) perspective(1000px) rotateY(0deg);
+      filter: blur(0);
+      background: linear-gradient(145deg, rgba(19, 143, 243, 0.18), rgba(19, 143, 243, 0.12));
+      border-color: rgba(19, 143, 243, 0.4);
+      box-shadow: 
+        0 20px 60px rgba(19, 143, 243, 0.25),
+        0 8px 24px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    .testimonial-card.prev,
+    .testimonial-card.next {
+      opacity: 0.7;
+      transform: scale(0.9) perspective(1000px) rotateY(-8deg);
+      filter: blur(2px);
+    }
+    
+    
+    .testimonial-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .testimonial-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .testimonial-avatar-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--bleu), #6ec1ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(19, 143, 243, 0.3);
+      box-shadow: 
+        0 8px 24px rgba(19, 143, 243, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      transform: perspective(500px) rotateY(-5deg);
+    }
+    
+    .testimonial-avatar-icon i {
+      font-size: 1.8rem;
+      color: white;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+    
+    .testimonial-card.active .testimonial-avatar-icon {
+      border-color: rgba(19, 143, 243, 0.5);
+      box-shadow: 
+        0 12px 32px rgba(19, 143, 243, 0.3),
+        0 6px 16px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transform: perspective(500px) rotateY(0deg);
+    }
+    
+    .testimonial-stars {
+      display: flex;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-bottom: 1.2rem;
+    }
+    
+    .testimonial-stars i {
+      color: #ffd700;
+      font-size: 1.2rem;
+      filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.4));
+      transition: all 0.3s ease;
+    }
+    
+    .testimonial-card.active .testimonial-stars i {
+      filter: drop-shadow(0 3px 8px rgba(255, 215, 0, 0.5));
+    }
+    
+    .testimonial-text {
+      font-size: 1rem;
+      color: #e3eaf2;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-style: italic;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    
+    .testimonial-author {
+      text-align: center;
+    }
+    
+    .testimonial-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blanc);
+      margin-bottom: 0.2rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    
+    /* .testimonial-position supprimé car plus utilisé */
+    
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .dot.active {
+      background: var(--bleu);
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(19, 143, 243, 0.5);
+    }
+    
+    .dot:hover {
+      background: rgba(19, 143, 243, 0.6);
+      transform: scale(1.1);
+    }
+    
+    /* Animation d'apparition des cards */
+    .testimonial-card {
+      animation: testimonialFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation-delay: calc(var(--card-index, 0) * 0.1s);
+    }
+    
+    /* Modal de devis */
+    .devis-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      backdrop-filter: blur(8px);
+    }
+    
+    .devis-modal.active {
+      display: flex;
+    }
+    
+    .devis-modal-content {
+      background: linear-gradient(145deg, rgba(19, 143, 243, 0.1), rgba(19, 143, 243, 0.05));
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      border: 1px solid rgba(19, 143, 243, 0.2);
+      box-shadow: 0 20px 60px rgba(19, 143, 243, 0.2);
+      backdrop-filter: blur(10px);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .devis-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(19, 143, 243, 0.2);
+    }
+    
+    .devis-modal-header h3 {
+      color: var(--blanc);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .devis-modal-close {
+      background: none;
+      border: none;
+      color: var(--blanc);
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .devis-modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+    
+    .devis-modal-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .devis-option {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      min-height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .devis-option:hover,
+    .devis-option:active,
+    .devis-option:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(19, 143, 243, 0.2);
+      border-color: rgba(19, 143, 243, 0.4);
+      outline: none;
+    }
+    
+    .devis-option:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 15px rgba(19, 143, 243, 0.3);
+    }
+    
+    .email-option:hover,
+    .email-option:active,
+    .email-option:focus {
+      background: linear-gradient(145deg, rgba(234, 67, 53, 0.1), rgba(234, 67, 53, 0.05));
+      border-color: rgba(234, 67, 53, 0.3);
+    }
+    
+    .whatsapp-option:hover,
+    .whatsapp-option:active,
+    .whatsapp-option:focus {
+      background: linear-gradient(145deg, rgba(37, 211, 102, 0.1), rgba(37, 211, 102, 0.05));
+      border-color: rgba(37, 211, 102, 0.3);
+    }
+    
+    .devis-option-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .email-option .devis-option-icon {
+      background: linear-gradient(135deg, #EA4335, #ff6b6b);
+      color: white;
+    }
+    
+    .whatsapp-option .devis-option-icon {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+    }
+    
+    .devis-option-content h4 {
+      color: var(--blanc);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .devis-option-content p {
+      color: #e3eaf2;
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    /* Animation des icônes sociales */
+    .social-icons-fixed {
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons-fixed.animate {
+      transform: scale(1.3);
+    }
+    
+    .social-icons-fixed.animate .social-icon {
+      transform: scale(1.2);
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons-fixed.animate .social-icon:nth-child(1) {
+      animation: socialIconPulse 0.6s ease-in-out;
+    }
+    
+    .social-icons-fixed.animate .social-icon:nth-child(2) {
+      animation: socialIconPulse 0.6s ease-in-out 0.1s;
+    }
+    
+    .social-icons-fixed.animate .social-icon:nth-child(3) {
+      animation: socialIconPulse 0.6s ease-in-out 0.2s;
+    }
+    
+    @keyframes socialIconPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.4);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes testimonialFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+      }
+      to {
+        opacity: 0.7;
+        transform: translateY(0) scale(0.9);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      /* Optimisations mobile pour la navigation */
+      html {
+        scroll-padding-top: 60px; /* Offset réduit sur mobile */
+      }
+
+      section {
+        scroll-margin-top: 60px;
+      }
+
+      /* Amélioration de l'indicateur actif sur mobile */
+      .navbar__overlay a.active::before {
+        left: -15px;
+        width: 6px;
+        height: 6px;
+        animation: activePulse 1.5s infinite;
+      }
+
+      .navbar__overlay a.active {
+        color: rgb(19, 143, 243) !important;
+        font-weight: 800;
+        transform: translateX(10px);
+        text-shadow: 0 0 8px rgba(19, 143, 243, 0.6);
+      }
+
+      .hero-section {
+        padding-top: 60px;
+        padding-bottom: 30px;
+      }
+      
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding: 60px 0 40px 0;
+      }
+      
+      .testimonials-carousel {
+        padding: 1rem 0;
+        overflow: visible;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        min-height: 400px;
+      }
+      
+      .carousel-track {
+        gap: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        transition: none;
+        transform: none !important;
+        height: 100%;
+      }
+      
+      .testimonial-card {
+        min-width: 320px;
+        max-width: 380px;
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        margin: 0 auto;
+        flex-shrink: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1) !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+        pointer-events: none;
+      }
+      
+      .testimonial-card.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      
+      .testimonials-title {
+        font-size: 2rem;
+      }
+      
+      .testimonial-text {
+        font-size: 1rem;
+      }
+
+      /* Améliorations pour la navbar */
+      .navbar {
+        padding: 1.2rem 2vw;
+        min-height: 70px;
+      }
+
+      .navbar__logo {
+        font-size: 1.8rem;
+      }
+
+      .navbar__cta {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .navbar__cta .cta-text {
+        display: none;
+      }
+
+      .navbar__cta .cta-icon {
+        margin-right: 0;
+      }
+
+      /* Améliorations pour la section hero */
+      .home-main {
+        padding: 1rem;
+        gap: 0;
+        min-height: 60vh;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 0;
+      }
+
+      .glitch-text-col {
+        text-align: left;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .glitch-title {
+       
+        text-align: left;
+        justify-content: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+        margin-bottom: 0.1em;
+      }
+
+      .glitch-animated-text {
+        font-size: 1.1rem;
+        text-align: left;
+        justify-content: flex-start;
+      }
+
+      .btn-more {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      /* Améliorations pour les sections */
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        padding: 0 1rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+
+      .about-title,
+      .services-title,
+      .testimonials-title,
+      .realisations-title {
+        font-size: 2rem;
+       
+      }
+
+      /* Améliorations pour les cartes de services */
+      .services-cards {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .service-card {
+        padding: 2rem 1.5rem;
+      }
+
+      /* Améliorations pour la grille des réalisations */
+      .realisations-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .realisations-filters {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        justify-content: center;
+      }
+
+      .filter-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      /* Améliorations pour les icônes sociales */
+      .social-icons-fixed {
+        right: 1rem;
+        bottom: 1rem;
+        gap: 0.8rem;
+      }
+
+      .social-icon {
+        width: 45px;
+        height: 45px;
+      }
+
+      /* Améliorations pour le chatbot */
+      .krixbot-btn {
+        left: 1rem;
+        bottom: 1rem;
+        padding: 11px 15px;
+        font-size: 0.85rem;
+        gap: 7px;
+      }
+
+
+    }
+    
+    @media (max-width: 480px) {
+      .testimonial-card {
+        min-width: 280px;
+        max-width: 320px;
+        padding: 1.5rem 1rem 1rem 1rem;
+        transform: scale(0.85) perspective(600px) rotateY(-2deg);
+      }
+      
+      .testimonial-card.active {
+        transform: scale(0.95) perspective(600px) rotateY(0deg);
+      }
+      
+      .testimonial-avatar-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 12px;
+      }
+      
+      .testimonial-avatar-icon i {
+        font-size: 1.4rem;
+      }
+      
+      .testimonial-stars i {
+        font-size: 1rem;
+      }
+      
+      .testimonial-text {
+        font-size: 0.9rem;
+      }
+
+      /* Améliorations supplémentaires pour très petits écrans */
+      .navbar {
+        padding: 1rem 1vw;
+        min-height: 65px;
+      }
+
+      .navbar__logo {
+        font-size: 1.6rem;
+      }
+
+      .navbar__burger {
+        width: 35px;
+        height: 35px;
+      }
+
+      .burger-bar {
+        width: 24px;
+        height: 3px;
+      }
+
+      .home-main {
+        padding: 0.8rem;
+        gap: 1.5rem;
+      }
+      
+      .glitch-text-col {
+        text-align: left;
+        align-items: flex-start;
+        justify-content: center;
+        padding-left: 1rem;
+      }
+
+      .glitch-title {
+        font-size: 2.2rem;
+        text-align: left;
+        justify-content: flex-start;
+        margin-left: 0.5rem;
+        line-height: 1.3;
+        margin-bottom: 0.4em;
+      }
+
+      .glitch-animated-text {
+        font-size: 1.8rem;
+        text-align: left;
+        justify-content: flex-start;
+        margin-left: 0.5rem;
+        line-height: 1.4;
+        margin-top: 0.3em;
+        margin-bottom: 0.5em;
+      }
+
+      .btn-more {
+        padding: 0.7rem 1.4rem;
+        font-size: 1rem;
+        margin-left: 0.5rem;
+      }
+
+      .about-title,
+      .services-title,
+      .testimonials-title,
+      .realisations-title {
+        font-size: 1.8rem;
+       
+      }
+
+      .about-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .service-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .service-name {
+        font-size: 1.2rem;
+      }
+
+      .service-desc {
+        font-size: 0.9rem;
+      }
+
+      .realisations-filters {
+        gap: 0.6rem;
+      }
+
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .real-card {
+        height: 200px;
+      }
+
+      .real-card-title {
+        font-size: 1.1rem;
+      }
+
+      .real-card-badges {
+        gap: 0.3rem;
+      }
+
+      .badge {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+      }
+
+      .social-icons-fixed {
+        right: 0.8rem;
+        bottom: 0.8rem;
+        gap: 0.6rem;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .krixbot-btn {
+        left: 0.8rem;
+        bottom: 0.8rem;
+        padding: 9px 12px;
+        font-size: 0.75rem;
+        gap: 5px;
+      }
+
+      .krixbot-chat {
+        width: calc(100vw - 100px);
+        max-width: 320px;
+        left: 0.8rem;
+        bottom: 5rem;
+      }
+      
+
+    }
+
+    /* Optimisations pour la navigation par ancres */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px; /* Offset pour le header fixe */
+    }
+
+    /* Amélioration de l'accessibilité */
+    .nav-link:focus {
+      outline: 2px solid rgb(19, 143, 243);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Animation de transition pour les sections */
+    section {
+      scroll-margin-top: 80px;
+    }
+
+    /* Responsive pour tablettes */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .header {
+        padding: 1.5rem 2rem;
+      }
+      
+      .logo {
+        font-size: 1.9rem;
+      }
+      
+      .nav a {
+        font-size: 1rem;
+      }
+      
+      .home-main {
+        padding: 2rem 1.5rem;
+        gap: 2.2rem;
+      }
+      
+      .photo-moi-large {
+        width: 380px;
+        max-width: 85vw;
+      }
+      
+      .home-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      
+      .home-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .cta-btn {
+        font-size: 1rem;
+        padding: 0.8rem 2rem;
+      }
+      
+      .circle-anim {
+        width: 320px;
+        height: 320px;
+        max-width: 80vw;
+        max-height: 80vw;
+      }
+      
+      .services-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+      
+      .realisations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+      
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        padding: 0 2rem;
+        max-width: 900px;
+      }
+      
+      .services-title,
+      .realisations-title,
+      .testimonials-title {
+        font-size: 2.4rem;
+      }
+      
+      .testimonial-card {
+        min-width: 320px;
+        max-width: 380px;
+        padding: 2.2rem 1.8rem 1.8rem 1.8rem;
+      }
+    }
+
+    /* Améliorations pour les écrans très larges */
+    @media (min-width: 1200px) {
+      .navbar {
+        padding: 1.2rem 6vw;
+      }
+
+      .home-main {
+        max-width: 1400px;
+        padding: 3rem;
+      }
+
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 3rem;
+      }
+
+      .services-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+
+      .realisations-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+    }
+
+    /* Améliorations pour l'orientation paysage sur mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .hero-section {
+        padding-top: 40px;
+        padding-bottom: 20px;
+      }
+
+      .home-main {
+        min-height: 50vh;
+        gap: 1.5rem;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+      }
+
+      .glitch-layout {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .glitch-img-col {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .glitch-text-col {
+        flex: 1;
+        text-align: left;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .glitch-title {
+        font-size: 1.6rem;
+        text-align: left;
+        justify-content: flex-start;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .glitch-animated-text {
+        font-size: 1rem;
+        text-align: left;
+        justify-content: flex-start;
+      }
+
+      .btn-more {
+        margin: 0;
+      }
+
+      .about-section,
+      .services-section,
+      .testimonials-section,
+      .realisations-section {
+        padding: 40px 0 30px 0;
+      }
+    }
+
+    /* Améliorations pour les écrans très larges */
+    @media (min-width: 1200px) {
+      .navbar {
+        padding: 1.2rem 6vw;
+      }
+
+      .home-main {
+        max-width: 1400px;
+        padding: 3rem;
+      }
+
+      .about-container,
+      .services-container,
+      .testimonials-container,
+      .realisations-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 3rem;
+      }
+
+      .services-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+
+      .realisations-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bubbles-bg" id="bubblesBg"></div>
+  <!-- Splash Screen -->
+  <div class="splash" id="splash">
+    <div class="splash__welcome" id="splashWelcome"></div>
+    <div class="splash__loader">
+      <div class="splash__loader-bar" id="splashLoaderBar"></div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <section id="accueil" class="hero-section">
+    <div class="main-content" id="mainContent">
+      <header class="navbar">
+        <div class="navbar__logo" id="navbarLogo" style="cursor: pointer;">
+          <img src="assets/kdev.png" width="110" alt="KrixDev - Retour à l'accueil">
+        </div>
+        <div class="navbar__actions">
+          <button class="navbar__cta" id="ctaBtn" style="font-family: 'Montserrat', Arial, sans-serif;">
+              <i class="fas fa-file-invoice cta-icon" style="font-size: 1.2rem;"></i>
+              <span class="cta-text">Devis</span>
+          </button>
+          <div class="navbar__lang" id="langSwitcher">
+            <div class="lang-selector">
+              <div class="lang-display" id="langDisplay">
+                <span class="lang-flag flag-fr" id="currentFlag"></span>
+                <span class="lang-text" id="currentLang">Français</span>
+                <i class="fas fa-chevron-down lang-arrow"></i>
+              </div>
+              <div class="lang-dropdown" id="langDropdown">
+                <div class="lang-option" data-lang="fr">
+                  <span class="lang-flag flag-fr"></span>
+                  <span class="lang-text">Français</span>
+                </div>
+                <div class="lang-option" data-lang="en">
+                  <span class="lang-flag flag-en"></span>
+                  <span class="lang-text">English</span>
+                </div>
+                <div class="lang-option" data-lang="es">
+                  <span class="lang-flag flag-es"></span>
+                  <span class="lang-text">Español</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="navbar__burger" id="navbarBurger" aria-label="Ouvrir le menu" data-translate-aria="ouvrir-menu" aria-expanded="false" aria-controls="navbarOverlayMenu">
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+          </button>
+        </div>
+      </header>
+      <!-- Menu overlay caché par défaut -->
+      <nav class="navbar__overlay" id="navbarOverlayMenu" aria-hidden="true">
+        <button class="navbar__close" id="navbarClose" aria-label="Fermer le menu" data-translate-aria="fermer-menu">&times;</button>
+        <ul>
+          <li><a href="#accueil" class="nav-link" data-key="accueil" data-translate="accueil">Accueil</a></li>
+          <li><a href="#a-propos" class="nav-link" data-key="a-propos" data-translate="a-propos">À propos</a></li>
+          <li><a href="#services" class="nav-link" data-key="services" data-translate="services">Services</a></li>
+          <li><a href="#avis-clients" class="nav-link" data-key="avis-clients" data-translate="avis-clients">Avis Clients</a></li>
+          <li><a href="#realisations" class="nav-link" data-key="realisations" data-translate="realisations">Réalisations</a></li>
+        </ul>
+      </nav>
+      <main class="home-main glitch-layout">
+        <div class="glitch-img-col" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="400">
+          <div class="circle-anim">
+            <img src="assets/profile-pic.png" alt="Photo de Krix Dev" class="photo-moi-large" />
+          </div>
+        </div>
+        <div class="glitch-text-col" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="600">
+          <h1 class="glitch-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800"><span data-translate="hey-je-suis">Hey, je suis</span> <span>Christ Jr. 👋 </span></h1>
+          <div class="glitch-animated-text" id="glitchAnimatedText" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1000"></div>
+          <button class="btn-more" id="btnMore" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1200">
+            <span data-translate="en-savoir-plus">En savoir plus</span>
+            <span class="arrow-down">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </main>
+    </div>
+  </section>
+  
+  <!-- Modal de choix pour le devis -->
+  <div id="devisModal" class="devis-modal">
+    <div class="devis-modal-content">
+      <div class="devis-modal-header">
+        <h3 data-translate="devis-modal-title">Comment souhaitez-vous demander votre devis ?</h3>
+        <button class="devis-modal-close" id="devisModalClose">&times;</button>
+      </div>
+      <div class="devis-modal-options">
+        <div class="devis-option email-option">
+          <div class="devis-option-icon">
+            <i class="far fa-envelope"></i>
+          </div>
+          <div class="devis-option-content">
+            <h4 data-translate="devis-email-title">Par Email</h4>
+            <p data-translate="devis-email-desc">Envoyez-moi un email avec vos besoins</p>
+          </div>
+        </div>
+        <div class="devis-option whatsapp-option">
+          <div class="devis-option-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="devis-option-content">
+            <h4 data-translate="devis-whatsapp-title">Par WhatsApp</h4>
+            <p data-translate="devis-whatsapp-desc">Contactez-moi directement sur WhatsApp</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Section À propos -->
+    <section id="a-propos" class="about-section">
+      <div class="about-container">
+        <h2 class="about-title" data-translate="a-propos-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">À propos</h2>
+        <div class="about-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+          <p class="about-text" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600"><span data-translate="about-text-1">Capable de mettre en place n'importe quelle fonctionnalité digitale, je m'attache à créer des solutions fiables, rapides et prêtes pour le web.</span><br><br><span data-translate="about-text-2">Je suis Christ Junior DOLAPE, développeur full stack web & mobile, avec une forte sensibilité pour l'expérience utilisateur et la présence en ligne.</span><br><span data-translate="about-text-3">Mon approche : concevoir des produits cohérents, esthétiques et performants, de l'idée jusqu'à la mise en ligne.</span></p>
+          <button class="about-contact-btn" id="aboutContactBtn" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="800"><span class="phone-icon"><i class="fas fa-phone"></i></span><span data-translate="me-contacter">Me contacter</span></button>
+          <div class="about-tech-circles" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1000">
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1200"><i class="fab fa-html5" style="color:#e44d26;"></i><span>HTML5</span></div>
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1300"><i class="fab fa-css3-alt" style="color:#1572b6;"></i><span>CSS3</span></div>
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1400"><i class="fab fa-js" style="color:#f7df1e;"></i><span>JS</span></div>
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1500"><i class="fab fa-php" style="color:#777bb4;"></i><span>PHP</span></div>
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1600"><i class="fab fa-java" style="color:#e76f00;"></i><span>Java</span></div>
+            <div class="tech-circle" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1700"><i class="fab fa-figma" style="color:#a259ff;"></i><span>Figma</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section Services -->
+    <section id="services" class="services-section">
+      <div class="services-container">
+        <h2 class="services-title" data-translate="services-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">Services</h2>
+        <div class="services-cards" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+          <div class="service-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+            <div class="service-icon"><i class="fas fa-code"></i></div>
+            <h3 class="service-name" data-translate="service-web-title">Développement Web & Mobile</h3>
+                          <p class="service-desc" data-translate="service-web-desc">Création de sites web modernes, applications mobiles performantes et solutions sur-mesure pour tous vos besoins digitaux.</p>
+            <ul class="service-examples">
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-web-item-1">Sites vitrines & E-commerce</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-web-item-2">Applications Mobiles</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-web-item-3">Développements sur-mesure</span></li>
+            </ul>
+            <button class="service-cta devis-btn" data-service="Développement Web & Mobile"><span class="devis-icon"><i class="fas fa-file-invoice"></i></span><span data-translate="demander-devis">Demander un devis</span></button>
+            <div class="service-note" data-translate="service-note">Le tarif dépend des besoins spécifiques. N'hésitez pas à demander un devis personnalisé.</div>
+          </div>
+          <div class="service-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
+            <div class="service-icon"><i class="fas fa-users"></i></div>
+            <h3 class="service-name" data-translate="service-ux-title">Expérience Utilisateur & Présence en ligne</h3>
+                          <p class="service-desc" data-translate="service-ux-desc">Optimisation de l'ergonomie, design UI/UX et accompagnement pour renforcer votre visibilité et impact sur le web.</p>
+            <ul class="service-examples">
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-ux-item-1">Conception maquette site & apk</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-ux-item-2">Refonte graphique</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-ux-item-3">Optimisation SEO</span></li>
+            </ul>
+            <button class="service-cta devis-btn" data-service="Expérience Utilisateur & Présence en ligne"><span class="devis-icon"><i class="fas fa-file-invoice"></i></span><span data-translate="demander-devis">Demander un devis</span></button>
+            <div class="service-note" data-translate="service-note">Le tarif dépend des besoins spécifiques. N'hésitez pas à demander un devis personnalisé.</div>
+          </div>
+          <div class="service-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1000">
+            <div class="service-icon"><i class="fas fa-robot"></i></div>
+            <h3 class="service-name" data-translate="service-auto-title">Solutions interactives & automatisées</h3>
+                          <p class="service-desc" data-translate="service-auto-desc">Développement d'outils interactifs, automatisation de tâches et intégration de fonctionnalités intelligentes pour gagner en efficacité.</p>
+            <ul class="service-examples">
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-auto-item-1">Chatbots & formulaires</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-auto-item-2">Automatisation de tâches</span></li>
+              <li><span class="check-icon"><i class="fas fa-check-circle"></i></span><span data-translate="service-auto-item-3">Intégration d'API</span></li>
+            </ul>
+            <button class="service-cta devis-btn" data-service="Solutions interactives & automatisées"><span class="devis-icon"><i class="fas fa-file-invoice"></i></span><span data-translate="demander-devis">Demander un devis</span></button>
+            <div class="service-note" data-translate="service-note">Le tarif dépend des besoins spécifiques. N'hésitez pas à demander un devis personnalisé.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section Avis Clients -->
+    <section id="avis-clients" class="testimonials-section">
+      <div class="testimonials-container">
+        <h2 class="testimonials-title" data-translate="testimonials-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">Avis Clients</h2>
+        <div class="testimonials-carousel" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+          <div class="carousel-track">
+            <div class="testimonial-card" data-index="0">
+              <div class="testimonial-avatar">
+                <div class="testimonial-avatar-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="testimonial-content">
+                <div class="testimonial-stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text" data-translate="testimonial-1">"Professionnel, rapide et efficace. Je recommande Krix Dev les yeux fermés !"</p>
+                <div class="testimonial-author">
+                  <h4 class="testimonial-name">Anonyme</h4>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card" data-index="1">
+              <div class="testimonial-avatar">
+                <div class="testimonial-avatar-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="testimonial-content">
+                <div class="testimonial-stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <p class="testimonial-text" data-translate="testimonial-2">"Un plaisir de travailler avec lui, toujours à l'écoute et a le goût du design."</p>
+                <div class="testimonial-author">
+                  <h4 class="testimonial-name">Ehrel AVAHOUIN</h4>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card" data-index="2">
+              <div class="testimonial-avatar">
+                <div class="testimonial-avatar-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="testimonial-content">
+                <div class="testimonial-stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text" data-translate="testimonial-3">"Le site est exactement ce que j'imaginais, voire mieux ! Merci 🙏"</p>
+                <div class="testimonial-author">
+                  <h4 class="testimonial-name">Fahim MAMA</h4>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card" data-index="3">
+              <div class="testimonial-avatar">
+                <div class="testimonial-avatar-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="testimonial-content">
+                <div class="testimonial-stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <p class="testimonial-text" data-translate="testimonial-4">"Livraison dans les temps, travail propre. Je reviendrai sans hésiter."</p>
+                <div class="testimonial-author">
+                  <h4 class="testimonial-name">Félix</h4>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card" data-index="4">
+              <div class="testimonial-avatar">
+                <div class="testimonial-avatar-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="testimonial-content">
+                <div class="testimonial-stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text" data-translate="testimonial-5">"Mon application fonctionne parfaitement, et le design est top !"</p>
+                <div class="testimonial-author">
+                  <h4 class="testimonial-name">Aubrune</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="carousel-dots">
+          <button class="dot active" data-index="0" aria-label="Avis client 1"></button>
+          <button class="dot" data-index="1" aria-label="Avis client 2"></button>
+          <button class="dot" data-index="2" aria-label="Avis client 3"></button>
+          <button class="dot" data-index="3" aria-label="Avis client 4"></button>
+          <button class="dot" data-index="4" aria-label="Avis client 5"></button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section Réalisations -->
+    <section id="realisations" class="realisations-section last-section">
+      <div class="realisations-container">
+        <h2 class="realisations-title" data-translate="realisations-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">Réalisations</h2>
+        <div class="realisations-filters" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                      <button class="filter-btn active" data-filter="all" data-translate="filter-all">Tous</button>
+                      <button class="filter-btn" data-filter="web" data-translate="filter-web">Sites Web</button>
+            <button class="filter-btn" data-filter="mobile" data-translate="filter-mobile">Apps Mobile</button>
+                      <button class="filter-btn" data-filter="uiux" data-translate="filter-uiux">UI/UX</button>
+        </div>
+        <div class="realisations-grid" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+          <div class="real-card" data-cat="web" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="800">
+            <div class="real-card-bg" style="background-image:url('assets/topvision-web.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge html"><i class="fab fa-html5"></i> HTML</span>
+                <span class="badge css"><i class="fab fa-css3-alt"></i> CSS</span>
+                <span class="badge js"><i class="fab fa-js"></i> JS</span>
+                <span class="badge php"><i class="fab fa-php"></i> PHP</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-web">Site Web</span>
+                <h3 class="real-card-title">TopVision</h3>
+                <a href="https://topvision.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+         
+          <div class="real-card" data-cat="mobile" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="900">
+            <div class="real-card-bg" style="background-image:url('assets/zap-apk.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge java"><i class="fab fa-java"></i> Java</span>
+                <span class="badge xml"><i class="fas fa-code"></i> XML</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-mobile">App Mobile</span>
+                <h3 class="real-card-title">Zap</h3>
+                <a href="https://scanapp.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="real-card" data-cat="uiux" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1000">
+            <div class="real-card-bg" style="background-image:url('assets/PlaqScan-Maquette.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge figma"><i class="fab fa-figma"></i> Figma</span>
+                <span class="badge ui"><i class="fas fa-pencil-ruler"></i> UI</span>
+                <span class="badge ux"><i class="fas fa-user-check"></i> UX</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-uiux">Maquette UI/UX</span>
+                <h3 class="real-card-title">PlaqScan</h3>
+                <a href="https://artireseau.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="real-card" data-cat="web" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1100">
+            <div class="real-card-bg" style="background-image:url('assets/ntche-web.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge html"><i class="fab fa-html5"></i> HTML</span>
+                <span class="badge css"><i class="fab fa-css3-alt"></i> CSS</span>
+                <span class="badge js"><i class="fab fa-js"></i> JS</span>
+                <span class="badge php"><i class="fab fa-php"></i> PHP</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-web">Site Web</span>
+                <h3 class="real-card-title">N'tché</h3>
+                <a href="https://ntche.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="real-card" data-cat="mobile" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1200">
+            <div class="real-card-bg" style="background-image:url('assets/myltp-apk.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge java"><i class="fab fa-java"></i> Java</span>
+                <span class="badge xml"><i class="fas fa-code"></i> XML</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-mobile">App Mobile</span>
+                <h3 class="real-card-title">MyLTP</h3>
+                <a href="https://monprofil.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="real-card" data-cat="web" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1300">
+            <div class="real-card-bg" style="background-image:url('assets/scan-web.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge html"><i class="fab fa-html5"></i> HTML</span>
+                <span class="badge css"><i class="fab fa-css3-alt"></i> CSS</span>
+                <span class="badge js"><i class="fab fa-js"></i> JS</span>
+                <span class="badge php"><i class="fab fa-php"></i> PHP</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-web">Site Web</span>
+                <h3 class="real-card-title">Scann</h3>
+                <a href="https://topvision.com/ui" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="real-card" data-cat="web" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="1400">
+            <div class="real-card-bg" style="background-image:url('assets/artireseau-web.png');"></div>
+            <div class="real-card-overlay"></div>
+            <div class="real-card-content">
+              <div class="real-card-badges">
+                <span class="badge html"><i class="fab fa-html5"></i> HTML</span>
+                <span class="badge css"><i class="fab fa-css3-alt"></i> CSS</span>
+                <span class="badge js"><i class="fab fa-js"></i> JS</span>
+              </div>
+              <div class="real-card-info">
+                <span class="real-card-cat" data-translate="cat-web">Site Web</span>
+                <h3 class="real-card-title">ArtiRéseau</h3>
+                <a href="https://projet7.com" target="_blank" class="real-card-link" aria-label="Voir le projet"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-integrated">
+          <span data-translate="footer-copyright">© 2025 KrixDev. Reproduction interdite.</span>
+        </div>
+      </div>
+    </section>
+          <div class="social-icons-fixed" data-aos="fade-left" data-aos-duration="800" data-aos-delay="1600">
+        <a href="https://www.facebook.com/christ.dolape" target="_blank" class="social-icon" aria-label="Facebook" data-translate-aria="facebook" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="1800">
+          <i class="fab fa-facebook-f" style="color:#1877F3;font-size:1.6em;"></i>
+        </a>
+        <a href="https://wa.me/22999717895" target="_blank" class="social-icon" aria-label="WhatsApp" data-translate-aria="whatsapp" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="2000">
+          <i class="fab fa-whatsapp" style="color:#25D366;font-size:1.6em;"></i>
+        </a>
+        <a href="mailto:dolapechrist@gmail.com" class="social-icon" aria-label="Gmail" data-translate-aria="gmail" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="2200">
+        <i class="far fa-envelope" style="color:#EA4335;font-size:1.6em;"></i>
+      </a>
+    </div>
+  </div>
+  <!-- Chatbot KrixBot -->
+  <button id="krixbot-btn" class="krixbot-btn" data-translate="krixbot-btn" data-aos="fade-right" data-aos-duration="800" data-aos-delay="1600">💬 KrixBot</button>
+  <!-- Modal Projet -->
+  <div id="modalProjet" class="modal-projet">
+    <div class="modal-projet-content">
+      <span class="modal-projet-close" id="modalProjetClose">&times;</span>
+      <img id="modalProjetImg" src="" alt="Projet" class="modal-projet-img" />
+      <h3 id="modalProjetTitle"></h3>
+      <p id="modalProjetDesc"></p>
+      <button type="button" class="modal-projet-btn-close" id="modalProjetBtnClose" data-translate="modal-close">Fermer</button>
+    </div>
+  </div>
+
+  <script>
+    // Liste des mots de bienvenue dans différentes langues
+    const welcomes = [
+      'Bienvenue',
+      'Welcome',
+      'Bienvenido',
+      '欢迎',
+      'ようこそ',
+      'Добро пожаловать'
+    ];
+    const splashWelcome = document.getElementById('splashWelcome');
+    const splash = document.getElementById('splash');
+    const mainContent = document.getElementById('mainContent');
+    const loaderBar = document.getElementById('splashLoaderBar');
+    // Animation type machine à écrire/fondu
+    let current = 0;
+    function showWelcomeWord(idx) {
+      splashWelcome.style.opacity = 0;
+      setTimeout(() => {
+        splashWelcome.textContent = welcomes[idx];
+        splashWelcome.style.opacity = 1;
+      }, 120);
+    }
+    function animateWelcomes() {
+      showWelcomeWord(current);
+      let count = 0;
+      let max = 6; // pour afficher toutes les langues
+      function nextWelcome() {
+        count++;
+        if (count < max) {
+          current = (current + 1) % welcomes.length;
+          showWelcomeWord(current);
+          setTimeout(nextWelcome, 500);
+        } else {
+          setTimeout(() => {
+            launchSplashTransition();
+          }, 400);
+        }
+      }
+      setTimeout(nextWelcome, 500);
+    }
+    // Animation de la barre de chargement
+    setTimeout(() => {
+      loaderBar.style.width = '100%';
+    }, 200);
+    // Transition splash vers main content
+    function launchSplashTransition() {
+      gsap.to(splash, {
+        y: '-100%',
+        duration: 0.9,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          splash.style.display = 'none';
+          mainContent.classList.add('visible');
+        }
+      });
+      gsap.to(mainContent, {
+        opacity: 1,
+        delay: 0.5,
+        duration: 0.7,
+        onStart: () => {
+          mainContent.style.pointerEvents = 'auto';
+        }
+      });
+    }
+    // Lancer l'animation au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+      // Initialiser AOS (Animate On Scroll)
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out-cubic',
+        once: true,
+        mirror: false,
+        offset: 100,
+        delay: 0
+      });
+      
+      animateWelcomes();
+    });
+
+    // --- MENU HAMBURGER TOUJOURS VISIBLE ET OVERLAY ---
+    const burger = document.getElementById('navbarBurger');
+    const overlay = document.getElementById('navbarOverlayMenu');
+    const closeBtn = document.getElementById('navbarClose');
+    // Ouvre/ferme le menu overlay
+    burger.addEventListener('click', function() {
+      const isOpen = overlay.classList.toggle('open');
+      burger.classList.toggle('open');
+      burger.setAttribute('aria-expanded', isOpen);
+      overlay.setAttribute('aria-hidden', !isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
+      
+      // Gestion du focus
+      if (isOpen) {
+        // Quand le menu s'ouvre, mettre le focus sur le premier lien
+        setTimeout(() => {
+          const firstLink = overlay.querySelector('a');
+          if (firstLink) {
+            firstLink.focus();
+          }
+        }, 100);
+      } else {
+        // Quand le menu se ferme, retirer le focus des liens
+        const menuLinks = overlay.querySelectorAll('a');
+        menuLinks.forEach(link => link.blur());
+      }
+    });
+    // Ferme le menu avec la croix
+    closeBtn.addEventListener('click', function() {
+      // Retirer le focus de tous les éléments du menu
+      const menuLinks = overlay.querySelectorAll('a');
+      menuLinks.forEach(link => link.blur());
+      
+      overlay.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', false);
+      overlay.setAttribute('aria-hidden', true);
+      document.body.classList.remove('menu-open');
+      
+      // Remettre le focus sur le bouton burger
+      setTimeout(() => {
+        burger.focus();
+      }, 100);
+    });
+    // Ferme le menu si on clique sur un lien (géré par la fonction principale)
+    // Cette section est maintenant gérée par l'event listener principal plus haut
+    // Accessibilité : fermer le menu avec Echap
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        // Retirer le focus de tous les éléments du menu
+        const menuLinks = overlay.querySelectorAll('a');
+        menuLinks.forEach(link => link.blur());
+        
+        overlay.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', false);
+        overlay.setAttribute('aria-hidden', true);
+        document.body.classList.remove('menu-open');
+        
+        // Remettre le focus sur le bouton burger
+        setTimeout(() => {
+          burger.focus();
+        }, 100);
+      }
+    });
+    // Gestion du drapeau selon la langue sélectionnée + traduction dynamique
+    const ctaBtn = document.getElementById('ctaBtn');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // Animation slide-in gauche + fade, couleur bleue, icônes SVG
+    const slideData = {
+      fr: [
+      {
+        text: 'Développeur Web',
+        icon: `<i class='fas fa-laptop-code glitch-animated-icon' style='color:#A259FF;'></i>`
+      },
+      {
+        text: "Développeur Mobile",
+        icon: `<i class='fas fa-mobile-alt glitch-animated-icon' style='color:#A259FF;'></i>`
+      },
+      {
+        text: 'Designer UI/UX',
+        icon: `<i class='fa-brands fa-figma glitch-animated-icon' style='color:#A259FF;'></i>`
+      }
+      ],
+      en: [
+        {
+          text: 'Web Developer',
+          icon: `<i class='fas fa-laptop-code glitch-animated-icon' style='color:#A259FF;'></i>`
+        },
+        {
+          text: "Mobile Developer",
+          icon: `<i class='fas fa-mobile-alt glitch-animated-icon' style='color:#A259FF;'></i>`
+        },
+        {
+          text: 'UI/UX Designer',
+          icon: `<i class='fa-brands fa-figma glitch-animated-icon' style='color:#A259FF;'></i>`
+        }
+      ],
+      es: [
+        {
+          text: 'Desarrollador Web',
+          icon: `<i class='fas fa-laptop-code glitch-animated-icon' style='color:#A259FF;'></i>`
+        },
+        {
+          text: "Desarrollador Móvil",
+          icon: `<i class='fas fa-mobile-alt glitch-animated-icon' style='color:#A259FF;'></i>`
+        },
+        {
+          text: 'Diseñador UI/UX',
+          icon: `<i class='fa-brands fa-figma glitch-animated-icon' style='color:#A259FF;'></i>`
+        }
+      ]
+    };
+    
+    let currentSlideData = slideData.fr; // Par défaut en français
+    const slideTextElem = document.getElementById('glitchAnimatedText');
+    let slideIdx = 0;
+    function showSlideText(data) {
+      slideTextElem.innerHTML = '<span>' + data.text + '</span>' + data.icon;
+      slideTextElem.classList.add('visible');
+    }
+    function hideSlideText() {
+      slideTextElem.classList.remove('visible');
+    }
+    function cycleSlideText() {
+      showSlideText(currentSlideData[slideIdx]);
+      setTimeout(() => {
+        hideSlideText();
+        slideIdx = (slideIdx + 1) % currentSlideData.length;
+        setTimeout(() => {
+          showSlideText(currentSlideData[slideIdx]);
+        }, 200);
+        setTimeout(cycleSlideText, 2200);
+      }, 1800);
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      // Animation d'apparition du bloc texte
+      const glitchTextCol = document.querySelector('.glitch-text-col');
+      setTimeout(() => {
+        glitchTextCol.classList.add('visible');
+      }, 200);
+      showSlideText(currentSlideData[0]);
+      setTimeout(cycleSlideText, 1800);
+    });
+    // Bulles animées en arrière-plan
+    const bubblesBg = document.getElementById('bubblesBg');
+    function randomBetween(a, b) {
+      return a + Math.random() * (b - a);
+    }
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      const size = randomBetween(22, 85);
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = randomBetween(0, 100) + 'vw';
+      bubble.style.animationDuration = randomBetween(13, 22) + 's';
+      bubble.style.opacity = randomBetween(0.18, 0.45);
+      bubble.style.background = `linear-gradient(135deg, rgba(19,143,243,${randomBetween(0.5,0.9)}), #fff)`;
+      bubblesBg.appendChild(bubble);
+      bubble.addEventListener('animationend', () => {
+        bubble.remove();
+      });
+    }
+    setInterval(() => {
+      if (bubblesBg.childElementCount < 10) createBubble();
+    }, 700);
+    for (let i = 0; i < 6; i++) createBubble();
+
+
+    // --- FILTRES REALISATIONS ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const realCards = document.querySelectorAll('.real-card');
+    // Animation d'apparition au scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.18 });
+    realCards.forEach(card => {
+      observer.observe(card);
+    });
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.getAttribute('data-filter');
+        realCards.forEach(card => {
+          // Toujours retirer la classe visible
+          card.classList.remove('visible');
+          if (filter === 'all' || card.getAttribute('data-cat') === filter) {
+            card.style.display = '';
+            // Forcer le reflow pour relancer l'animation
+            void card.offsetWidth;
+            card.classList.remove('visible');
+            setTimeout(() => {
+              card.classList.add('visible');
+            }, 10);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+    // --- MODAL PROJET ---
+    const projetsData = {
+      fr: [
+      {
+        img: 'assets/topvision-web.png',
+        title: 'TopVision',
+        desc: `Site web vitrine pour photographe avec un système de réservation intégré.`,
+        tech: [
+          { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+          { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+          { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+          { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+        ]
+      },
+      {
+        img: 'assets/zap-apk.png',
+        title: 'Zap',
+        desc: "Application mobile simplifiant l'achat de crédit et l'envoi d'argent sur les réseaux mobiles.",
+        tech: [
+          { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+          { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+        ]
+      },
+      {
+        img: 'assets/PlaqScan-Maquette.png',
+        title: 'PlaqScan',
+        desc: "Maquette UI/UX réalisée sous Figma pour une application de scan de plaque d'immatriculation.",
+        tech: [
+          { badge: 'figma', icon: 'fab fa-figma', label: 'Figma' },
+          { badge: 'ui', icon: 'fas fa-pencil-ruler', label: 'UI' },
+          { badge: 'ux', icon: 'fas fa-user-check', label: 'UX' }
+        ]
+      },
+      {
+        img: 'assets/ntche-web.png',
+        title: "N'tché (Mon objet)",
+        desc: "Plateforme de déclaration d'objets volés pour la lutte contre le vol au Bénin.",
+        tech: [
+          { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+          { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+          { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+          { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+        ]
+      },
+      {
+        img: 'assets/myltp-apk.png',
+        title: 'MyLTP',
+        desc: 'Application mobile développée pour un lycée présentant ses filières et facilite le partage de ressources entre Prof et Lycéens.',
+        tech: [
+          { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+          { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+        ]
+      },
+      {
+        img: 'assets/scan-web.png',
+        title: 'Scann',
+        desc: 'Site web de scan de code QR lié à un evènement privé.',
+        tech: [
+          { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+          { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+          { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+          { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+        ]
+      },
+      {
+        img: 'assets/artireseau-web.png',
+        title: 'ArtiRéseau',
+        desc: 'Plateforme web pour la recherche d\'artisans.',
+        tech: [
+          { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+          { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+          { badge: 'js', icon: 'fab fa-js', label: 'JS' }
+        ]
+      }
+      ],
+      en: [
+        {
+          img: 'assets/topvision-web.png',
+          title: 'TopVision',
+          desc: `Showcase website for photographer with integrated booking system.`,
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/zap-apk.png',
+          title: 'Zap',
+          desc: "Mobile application simplifying credit purchase and money transfer on mobile networks.",
+          tech: [
+            { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+            { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+          ]
+        },
+        {
+          img: 'assets/PlaqScan-Maquette.png',
+          title: 'PlaqScan',
+          desc: "UI/UX mockup created in Figma for a license plate scanning application.",
+          tech: [
+            { badge: 'figma', icon: 'fab fa-figma', label: 'Figma' },
+            { badge: 'ui', icon: 'fas fa-pencil-ruler', label: 'UI' },
+            { badge: 'ux', icon: 'fas fa-user-check', label: 'UX' }
+          ]
+        },
+        {
+          img: 'assets/ntche-web.png',
+          title: "N'tché (My object)",
+          desc: "Platform for reporting stolen objects to fight theft in Benin.",
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/myltp-apk.png',
+          title: 'MyLTP',
+          desc: 'Mobile application developed for a high school presenting its programs and facilitating resource sharing between Teachers and Students.',
+          tech: [
+            { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+            { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+          ]
+        },
+        {
+          img: 'assets/scan-web.png',
+          title: 'Scann',
+          desc: 'QR code scanning website linked to a private event.',
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/artireseau-web.png',
+          title: 'ArtiRéseau',
+          desc: 'Web platform for finding craftsmen.',
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' }
+          ]
+        }
+      ],
+      es: [
+        {
+          img: 'assets/topvision-web.png',
+          title: 'TopVision',
+          desc: `Sitio web vitrina para fotógrafo con sistema de reserva integrado.`,
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/zap-apk.png',
+          title: 'Zap',
+          desc: "Aplicación móvil que simplifica la compra de crédito y el envío de dinero en redes móviles.",
+          tech: [
+            { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+            { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+          ]
+        },
+        {
+          img: 'assets/PlaqScan-Maquette.png',
+          title: 'PlaqScan',
+          desc: "Maqueta UI/UX creada en Figma para una aplicación de escaneo de matrículas.",
+          tech: [
+            { badge: 'figma', icon: 'fab fa-figma', label: 'Figma' },
+            { badge: 'ui', icon: 'fas fa-pencil-ruler', label: 'UI' },
+            { badge: 'ux', icon: 'fas fa-user-check', label: 'UX' }
+          ]
+        },
+        {
+          img: 'assets/ntche-web.png',
+          title: "N'tché (Mi objeto)",
+          desc: "Plataforma para reportar objetos robados para luchar contra el robo en Benin.",
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/myltp-apk.png',
+          title: 'MyLTP',
+          desc: 'Aplicación móvil desarrollada para un liceo presentando sus programas y facilitando el intercambio de recursos entre Profesores y Estudiantes.',
+          tech: [
+            { badge: 'java', icon: 'fab fa-java', label: 'Java' },
+            { badge: 'xml', icon: 'fas fa-code', label: 'XML' }
+          ]
+        },
+        {
+          img: 'assets/scan-web.png',
+          title: 'Scann',
+          desc: 'Sitio web de escaneo de códigos QR vinculado a un evento privado.',
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' },
+            { badge: 'php', icon: 'fab fa-php', label: 'PHP' }
+          ]
+        },
+        {
+          img: 'assets/artireseau-web.png',
+          title: 'ArtiRéseau',
+          desc: 'Plataforma web para encontrar artesanos.',
+          tech: [
+            { badge: 'html', icon: 'fab fa-html5', label: 'HTML' },
+            { badge: 'css', icon: 'fab fa-css3-alt', label: 'CSS' },
+            { badge: 'js', icon: 'fab fa-js', label: 'JS' }
+          ]
+        }
+      ]
+    };
+    
+    let currentProjetsData = projetsData.fr; // Par défaut en français
+    const modalProjet = document.getElementById('modalProjet');
+    const modalProjetImg = document.getElementById('modalProjetImg');
+    const modalProjetTitle = document.getElementById('modalProjetTitle');
+    const modalProjetDesc = document.getElementById('modalProjetDesc');
+    const modalProjetClose = document.getElementById('modalProjetClose');
+    document.querySelectorAll('.real-card').forEach((card, idx) => {
+      card.style.cursor = 'pointer';
+      card.querySelectorAll('a.real-card-link').forEach(a => a.remove());
+      card.addEventListener('click', () => {
+        const data = currentProjetsData[idx];
+        modalProjetImg.src = data.img;
+        // Ajout des badges techno avant le titre
+        let techHtml = '';
+        if (data.tech && Array.isArray(data.tech)) {
+          techHtml = '<div class="modal-projet-badges" style="display:flex;gap:0.5em;flex-wrap:wrap;justify-content:center;margin-bottom:1.1em;">' +
+            data.tech.map(t => `<span class="badge ${t.badge}"><i class="${t.icon}"></i> ${t.label}</span>`).join('') +
+            '</div>';
+        }
+        modalProjetTitle.innerHTML = techHtml + data.title;
+        modalProjetDesc.classList.add('modal-projet-desc');
+        modalProjetDesc.innerHTML = data.desc.replace(/\n/g, '<br>');
+        modalProjet.classList.add('open');
+      });
+    });
+    modalProjetClose.addEventListener('click', () => {
+      modalProjet.classList.remove('open');
+    });
+    modalProjet.addEventListener('click', (e) => {
+      if (e.target === modalProjet) modalProjet.classList.remove('open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalProjet.classList.contains('open')) {
+        modalProjet.classList.remove('open');
+      }
+    });
+    // Bouton "Fermer" en bas de la modale projet
+    const modalProjetBtnClose = document.getElementById('modalProjetBtnClose');
+    modalProjetBtnClose.addEventListener('click', () => {
+      modalProjet.classList.remove('open');
+    });
+
+    // --- CAROUSEL AVIS CLIENTS ---
+    const carouselTrack = document.querySelector('.carousel-track');
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
+    let autoPlayInterval;
+    let isHovering = false;
+
+    // Fonction pour créer un carousel infini
+    function createInfiniteCarousel() {
+      const originalCards = Array.from(testimonialCards);
+      
+      // Cloner les cartes pour créer l'effet infini
+      originalCards.forEach((card, index) => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute('data-index', index + originalCards.length);
+        carouselTrack.appendChild(clone);
+      });
+
+      // Ajouter les cartes clonées au début aussi
+      originalCards.forEach((card, index) => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute('data-index', index - originalCards.length);
+        carouselTrack.insertBefore(clone, carouselTrack.firstChild);
+      });
+
+      // Mettre à jour la position initiale pour centrer les cartes originales
+      const cardWidth = originalCards[0].offsetWidth + 32;
+      const containerWidth = document.querySelector('.testimonials-carousel').offsetWidth;
+      const centerOffset = (containerWidth - originalCards[0].offsetWidth) / 2;
+      const translateX = -(originalCards.length * cardWidth) + centerOffset;
+      carouselTrack.style.transform = `translateX(${translateX}px)`;
+    }
+
+    // Fonction pour mettre à jour l'affichage du carousel
+    function updateCarousel(index) {
+      const allCards = document.querySelectorAll('.testimonial-card');
+      const totalCards = allCards.length;
+      const originalCount = testimonialCards.length;
+      
+      // Mettre à jour les cards
+      allCards.forEach((card, i) => {
+        card.classList.remove('active', 'prev', 'next');
+        
+        if (i === index) {
+          card.classList.add('active');
+        } else if (i === (index - 1 + totalCards) % totalCards) {
+          card.classList.add('prev');
+        } else if (i === (index + 1) % totalCards) {
+          card.classList.add('next');
+        }
+      });
+
+      // Mettre à jour les dots (seulement pour les cartes originales)
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        const normalizedIndex = ((index - originalCount) % originalCount + originalCount) % originalCount;
+        if (i === normalizedIndex) {
+          dot.classList.add('active');
+        }
+      });
+
+      // Calculer la position de translation pour centrer la card active
+      const cardWidth = allCards[0].offsetWidth + 32; // 32px pour le gap
+      const containerWidth = document.querySelector('.testimonials-carousel').offsetWidth;
+      const centerOffset = (containerWidth - allCards[0].offsetWidth) / 2;
+      const translateX = -(index * cardWidth) + centerOffset;
+      
+      carouselTrack.style.transform = `translateX(${translateX}px)`;
+    }
+
+    // Fonction pour passer à la card suivante
+    function nextCard() {
+      const allCards = document.querySelectorAll('.testimonial-card');
+      const totalCards = allCards.length;
+      const originalCount = testimonialCards.length;
+      
+      currentIndex = (currentIndex + 1) % totalCards;
+      updateCarousel(currentIndex);
+      
+      // Si on atteint la fin, revenir au début des cartes originales
+      if (currentIndex >= originalCount * 2) {
+        setTimeout(() => {
+          currentIndex = originalCount;
+          updateCarousel(currentIndex);
+        }, 600); // Attendre la fin de la transition
+      }
+    }
+
+    // Fonction pour passer à la card précédente
+    function prevCard() {
+      const allCards = document.querySelectorAll('.testimonial-card');
+      const totalCards = allCards.length;
+      const originalCount = testimonialCards.length;
+      
+      currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+      updateCarousel(currentIndex);
+      
+      // Si on atteint le début, aller à la fin des cartes originales
+      if (currentIndex < originalCount) {
+        setTimeout(() => {
+          currentIndex = originalCount * 2 - 1;
+          updateCarousel(currentIndex);
+        }, 600); // Attendre la fin de la transition
+      }
+    }
+
+    // Fonction pour aller à une card spécifique
+    function goToCard(index) {
+      const originalCount = testimonialCards.length;
+      currentIndex = index + originalCount; // Commencer au milieu (cartes clonées)
+      updateCarousel(currentIndex);
+    }
+
+    // Fonction pour démarrer l'autoplay
+    function startAutoPlay() {
+      if (!isHovering) {
+        autoPlayInterval = setInterval(nextCard, 4500); // 4.5 secondes
+      }
+    }
+
+    // Fonction pour arrêter l'autoplay
+    function stopAutoPlay() {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+      }
+    }
+
+    // Event listeners pour les dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const originalCount = testimonialCards.length;
+        currentIndex = index + originalCount; // Aller à la carte correspondante dans la section clonée
+        updateCarousel(currentIndex);
+        stopAutoPlay();
+        startAutoPlay(); // Redémarrer l'autoplay après interaction manuelle
+      });
+    });
+
+    // Event listeners pour les cards (désactivé - pas de clic)
+    function addCardEventListeners() {
+      // Désactivé - les cartes ne sont plus cliquables
+      // const allCards = document.querySelectorAll('.testimonial-card');
+      // allCards.forEach((card) => {
+      //   card.addEventListener('click', () => {
+      //     const cardIndex = parseInt(card.getAttribute('data-index'));
+      //     currentIndex = cardIndex;
+      //     updateCarousel(currentIndex);
+      //     stopAutoPlay();
+      //     startAutoPlay(); // Redémarrer l'autoplay après interaction manuelle
+      //   });
+      // });
+    }
+
+    // Pause au hover sur le carousel
+    const carousel = document.querySelector('.testimonials-carousel');
+    carousel.addEventListener('mouseenter', () => {
+      isHovering = true;
+      stopAutoPlay();
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+      isHovering = false;
+      startAutoPlay();
+    });
+
+    // Navigation au clavier
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevCard();
+        stopAutoPlay();
+        startAutoPlay();
+      } else if (e.key === 'ArrowRight') {
+        nextCard();
+        stopAutoPlay();
+        startAutoPlay();
+      }
+    });
+
+    // Initialisation
+    function initCarousel() {
+      // Créer le carousel infini
+      createInfiniteCarousel();
+      
+      // Ajouter les event listeners
+      addCardEventListeners();
+      
+      // Définir les indices pour l'animation d'apparition
+      testimonialCards.forEach((card, index) => {
+        card.style.setProperty('--card-index', index);
+      });
+
+      // Commencer au milieu (cartes originales)
+      currentIndex = testimonialCards.length;
+      updateCarousel(currentIndex);
+
+      // Démarrer l'autoplay après un délai
+      setTimeout(startAutoPlay, 2000);
+    }
+
+    // Initialiser le carousel quand la page est chargée
+    window.addEventListener('load', initCarousel);
+
+    // Réinitialiser le carousel lors du redimensionnement de la fenêtre
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        updateCarousel(currentIndex);
+      }, 100);
+    });
+
+    // --- GESTION DE LA RESPONSIVITÉ ---
+    function handleResponsiveElements() {
+      // Ajuster la taille du texte du marquee selon la taille d'écran
+      const marquee = document.querySelector('.home-bg-marquee');
+      if (marquee) {
+        const updateMarqueeSize = function() {
+          if (window.innerWidth <= 480) {
+            marquee.style.fontSize = '4vw';
+          } else if (window.innerWidth <= 768) {
+            marquee.style.fontSize = '5vw';
+          } else {
+            marquee.style.fontSize = '6vw';
+          }
+        };
+        
+        updateMarqueeSize();
+        window.addEventListener('resize', updateMarqueeSize);
+      }
+    }
+    
+    // Initialisation des éléments responsives au chargement
+    window.addEventListener('load', () => {
+  
+      handleResponsiveElements();
+      
+      // Vérifier que toutes les sections existent
+      const sections = ['accueil', 'a-propos', 'services', 'avis-clients', 'realisations'];
+      sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+  
+        }
+      });
+    });
+
+    // --- GESTION DES LANGUES ---
+    const langDisplay = document.getElementById('langDisplay');
+    const langDropdown = document.getElementById('langDropdown');
+    const currentFlag = document.getElementById('currentFlag');
+    const currentLang = document.getElementById('currentLang');
+    const langOptions = document.querySelectorAll('.lang-option');
+    
+    // Données des langues
+    const languages = {
+      fr: { name: 'Français', flag: 'flag-fr' },
+      en: { name: 'English', flag: 'flag-en' },
+      es: { name: 'Español', flag: 'flag-es' }
+    };
+    
+    // Traductions
+    const translations = {
+      fr: {
+        devis: 'Demander un devis',
+        accueil: 'Accueil',
+        'a-propos': 'À propos',
+        realisations: 'Réalisations',
+        services: 'Services',
+        'avis-clients': 'Avis Clients',
+        contact: 'Contact',
+        bienvenue: 'Bienvenue',
+        bandeau: 'Développeur Web freelance'
+      },
+      en: {
+        devis: 'Request a quote',
+        accueil: 'Home',
+        'a-propos': 'About',
+        realisations: 'Projects',
+        services: 'Services',
+        'avis-clients': 'Testimonials',
+        contact: 'Contact',
+        bienvenue: 'Welcome',
+        bandeau: 'Freelance Web Developer'
+      },
+      es: {
+        devis: 'Solicitar un presupuesto',
+        accueil: 'Inicio',
+        'a-propos': 'Sobre mí',
+        realisations: 'Proyectos',
+        services: 'Servicios',
+        'avis-clients': 'Testimonios',
+        contact: 'Contacto',
+        bienvenue: 'Bienvenido',
+        bandeau: 'Desarrollador Web freelance'
+      }
+    };
+    
+    let currentLanguage = 'fr';
+    let isDropdownOpen = false;
+    
+    // Fonction pour mettre à jour l'affichage de la langue
+    function updateLanguageDisplay(lang) {
+      const langData = languages[lang];
+      if (langData) {
+        currentFlag.className = `lang-flag ${langData.flag}`;
+        currentLang.textContent = langData.name;
+        currentLanguage = lang;
+        
+        // Mettre à jour la sélection dans le dropdown
+        langOptions.forEach(option => {
+          option.classList.remove('selected');
+          if (option.dataset.lang === lang) {
+            option.classList.add('selected');
+          }
+        });
+      }
+    }
+    
+    // Fonction pour mettre à jour les traductions
+    function updateTranslations(lang) {
+      // Bouton devis
+      const ctaText = ctaBtn.querySelector('.cta-text');
+      if (ctaText) ctaText.textContent = translations[lang].devis;
+      
+      // Liens menu overlay
+      navLinks.forEach(link => {
+        const key = link.getAttribute('data-key');
+        if (translations[lang][key]) link.textContent = translations[lang][key];
+      });
+      
+      // Splash bienvenue
+      if (splashWelcome) splashWelcome.textContent = translations[lang].bienvenue;
+      
+      // Bandeau bas
+      document.querySelectorAll('.home-bg-marquee span').forEach(span => {
+        span.textContent = translations[lang].bandeau;
+      });
+    }
+    
+    // Fonction pour changer de langue
+    function changeLanguage(lang) {
+      updateLanguageDisplay(lang);
+      updateTranslations(lang);
+      translateAllElements(lang);
+      closeDropdown();
+    }
+    
+    // Fonction pour ouvrir le dropdown
+    function openDropdown() {
+      langDropdown.classList.add('active');
+      langDisplay.classList.add('active');
+      isDropdownOpen = true;
+    }
+    
+    // Fonction pour fermer le dropdown
+    function closeDropdown() {
+      langDropdown.classList.remove('active');
+      langDisplay.classList.remove('active');
+      isDropdownOpen = false;
+    }
+    
+    // Gestionnaire de clic sur l'affichage de la langue
+    langDisplay.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isDropdownOpen) {
+        closeDropdown();
+      } else {
+        openDropdown();
+      }
+    });
+    
+    // Gestionnaires de clic sur les options
+    langOptions.forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const selectedLang = this.dataset.lang;
+        if (selectedLang && selectedLang !== currentLanguage) {
+          changeLanguage(selectedLang);
+        }
+      });
+    });
+    
+    // Fermer le dropdown quand on clique ailleurs
+    document.addEventListener('click', function(e) {
+      if (!langDisplay.contains(e.target) && !langDropdown.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+    
+    // Fermer le dropdown avec la touche Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isDropdownOpen) {
+        closeDropdown();
+      }
+    });
+    
+    // Initialisation
+    updateLanguageDisplay(currentLanguage);
+    updateTranslations(currentLanguage);
+    
+    // Ajout des nouvelles traductions
+    const newTranslations = {
+      'hey-je-suis': {
+        fr: 'Hey, je suis',
+        en: 'Hey, I\'m',
+        es: 'Hola, soy'
+      },
+      'en-savoir-plus': {
+        fr: 'En savoir plus',
+        en: 'Learn more',
+        es: 'Saber más'
+      },
+      'a-propos-title': {
+        fr: 'À propos',
+        en: 'About',
+        es: 'Acerca de'
+      },
+      'devis-modal-title': {
+        fr: 'Comment souhaitez-vous demander votre devis ?',
+        en: 'How would you like to request your quote?',
+        es: '¿Cómo te gustaría solicitar tu cotización?'
+      },
+      'devis-email-title': {
+        fr: 'Par Email',
+        en: 'By Email',
+        es: 'Por Email'
+      },
+      'devis-email-desc': {
+        fr: 'Envoyez-moi un email avec vos besoins',
+        en: 'Send me an email with your needs',
+        es: 'Envíame un email con tus necesidades'
+      },
+      'devis-whatsapp-title': {
+        fr: 'Par WhatsApp',
+        en: 'By WhatsApp',
+        es: 'Por WhatsApp'
+      },
+      'devis-whatsapp-desc': {
+        fr: 'Contactez-moi directement sur WhatsApp',
+        en: 'Contact me directly on WhatsApp',
+        es: 'Contáctame directamente en WhatsApp'
+      },
+      'me-contacter': {
+        fr: 'Me contacter',
+        en: 'Contact me',
+        es: 'Contáctame'
+      },
+      // Section À propos
+      'about-text-1': {
+        fr: 'Capable de mettre en place n\'importe quelle fonctionnalité digitale, je m\'attache à créer des solutions fiables, rapides et prêtes pour le web.',
+        en: 'Capable of implementing any digital functionality, I focus on creating reliable, fast and web-ready solutions.',
+        es: 'Capaz de implementar cualquier funcionalidad digital, me enfoco en crear soluciones confiables, rápidas y listas para la web.'
+      },
+      'about-text-2': {
+        fr: 'Je suis Christ Junior DOLAPE, développeur full stack web & mobile, avec une forte sensibilité pour l\'expérience utilisateur et la présence en ligne.',
+        en: 'I am Christ Junior DOLAPE, full stack web & mobile developer, with a strong sensitivity for user experience and online presence.',
+        es: 'Soy Christ Junior DOLAPE, desarrollador full stack web y móvil, con una fuerte sensibilidad por la experiencia del usuario y la presencia en línea.'
+      },
+      'about-text-3': {
+        fr: 'Mon approche : concevoir des produits cohérents, esthétiques et performants, de l\'idée jusqu\'à la mise en ligne.',
+        en: 'My approach: designing coherent, aesthetic and high-performance products, from idea to online deployment.',
+        es: 'Mi enfoque: diseñar productos coherentes, estéticos y de alto rendimiento, desde la idea hasta el despliegue en línea.'
+      },
+      // Section Services
+      'services-title': {
+        fr: 'Services',
+        en: 'Services',
+        es: 'Servicios'
+      },
+      'service-web-title': {
+        fr: 'Développement Web & Mobile',
+        en: 'Web & Mobile Development',
+        es: 'Desarrollo Web y Móvil'
+      },
+      'service-web-desc': {
+        fr: 'Création de sites web modernes, applications mobiles performantes et solutions sur-mesure pour tous vos besoins digitaux.',
+        en: 'Creation of modern websites, high-performance mobile applications and custom solutions for all your digital needs.',
+        es: 'Creación de sitios web modernos, aplicaciones móviles de alto rendimiento y soluciones personalizadas para todas sus necesidades digitales.'
+      },
+      'service-ux-title': {
+        fr: 'Expérience Utilisateur & Présence en ligne',
+        en: 'User Experience & Online Presence',
+        es: 'Experiencia de Usuario y Presencia en Línea'
+      },
+      'service-ux-desc': {
+        fr: 'Optimisation de l\'ergonomie, design UI/UX et accompagnement pour renforcer votre visibilité et impact sur le web.',
+        en: 'Ergonomics optimization, UI/UX design and support to strengthen your visibility and impact on the web.',
+        es: 'Optimización de ergonomía, diseño UI/UX y acompañamiento para fortalecer su visibilidad e impacto en la web.'
+      },
+      'service-auto-title': {
+        fr: 'Solutions interactives & automatisées',
+        en: 'Interactive & Automated Solutions',
+        es: 'Soluciones Interactivas y Automatizadas'
+      },
+      'service-auto-desc': {
+        fr: 'Développement d\'outils interactifs, automatisation de tâches et intégration de fonctionnalités intelligentes pour gagner en efficacité.',
+        en: 'Development of interactive tools, task automation and integration of intelligent features to gain efficiency.',
+        es: 'Desarrollo de herramientas interactivas, automatización de tareas e integración de funcionalidades inteligentes para ganar eficiencia.'
+      },
+      // Section Avis Clients
+      'testimonials-title': {
+        fr: 'Avis Clients',
+        en: 'Client Reviews',
+        es: 'Reseñas de Clientes'
+      },
+      // Section Réalisations
+      'realisations-title': {
+        fr: 'Réalisations',
+        en: 'Projects',
+        es: 'Proyectos'
+      },
+      // Attributs aria
+      'ouvrir-menu': {
+        fr: 'Ouvrir le menu',
+        en: 'Open menu',
+        es: 'Abrir menú'
+      },
+      'fermer-menu': {
+        fr: 'Fermer le menu',
+        en: 'Close menu',
+        es: 'Cerrar menú'
+      },
+      // Navigation
+      'accueil': {
+        fr: 'Accueil',
+        en: 'Home',
+        es: 'Inicio'
+      },
+      'a-propos': {
+        fr: 'À propos',
+        en: 'About',
+        es: 'Acerca de'
+      },
+      'services': {
+        fr: 'Services',
+        en: 'Services',
+        es: 'Servicios'
+      },
+      'avis-clients': {
+        fr: 'Avis Clients',
+        en: 'Client Reviews',
+        es: 'Reseñas de Clientes'
+      },
+      'realisations': {
+        fr: 'Réalisations',
+        en: 'Projects',
+        es: 'Proyectos'
+      },
+      // Filtres des réalisations
+      'filter-all': {
+        fr: 'Tous',
+        en: 'All',
+        es: 'Todos'
+      },
+      'filter-web': {
+        fr: 'Sites Web',
+        en: 'Web Sites',
+        es: 'Sitios Web'
+      },
+      'filter-mobile': {
+        fr: 'Apps Mobile',
+        en: 'Mobile Apps',
+        es: 'Apps Móviles'
+      },
+      'filter-uiux': {
+        fr: 'UI/UX',
+        en: 'UI/UX',
+        es: 'UI/UX'
+      },
+      // Éléments de services
+      'service-web-item-1': {
+        fr: 'Sites vitrines & E-commerce',
+        en: 'Showcase & E-commerce Sites',
+        es: 'Sitios vitrina y E-commerce'
+      },
+      'service-web-item-2': {
+        fr: 'Applications Mobiles',
+        en: 'Mobile Applications',
+        es: 'Aplicaciones Móviles'
+      },
+      'service-web-item-3': {
+        fr: 'Développements sur-mesure',
+        en: 'Custom Development',
+        es: 'Desarrollos a medida'
+      },
+      'service-ux-item-1': {
+        fr: 'Conception maquette site & apk',
+        en: 'Site & app mockup design',
+        es: 'Diseño de maquetas de sitios y apps'
+      },
+      'service-ux-item-2': {
+        fr: 'Refonte graphique',
+        en: 'Graphic redesign',
+        es: 'Rediseño gráfico'
+      },
+      'service-ux-item-3': {
+        fr: 'Optimisation SEO',
+        en: 'SEO Optimization',
+        es: 'Optimización SEO'
+      },
+      'service-auto-item-1': {
+        fr: 'Chatbots & formulaires',
+        en: 'Chatbots & forms',
+        es: 'Chatbots y formularios'
+      },
+      'service-auto-item-2': {
+        fr: 'Automatisation de tâches',
+        en: 'Task automation',
+        es: 'Automatización de tareas'
+      },
+      'service-auto-item-3': {
+        fr: 'Intégration d\'API',
+        en: 'API Integration',
+        es: 'Integración de API'
+      },
+      'demander-devis': {
+        fr: 'Demander un devis',
+        en: 'Request a quote',
+        es: 'Solicitar cotización'
+      },
+      'service-note': {
+        fr: 'Le tarif dépend des besoins spécifiques. N\'hésitez pas à demander un devis personnalisé.',
+        en: 'The rate depends on specific needs. Don\'t hesitate to request a personalized quote.',
+        es: 'La tarifa depende de las necesidades específicas. No dude en solicitar una cotización personalizada.'
+      },
+      // Footer et éléments divers
+      'footer-copyright': {
+        fr: '© 2025 KrixDev. Reproduction interdite.',
+        en: '© 2025 KrixDev. All rights reserved.',
+        es: '© 2025 KrixDev. Todos los derechos reservados.'
+      },
+      'krixbot-btn': {
+        fr: '💬 KrixBot',
+        en: '💬 KrixBot',
+        es: '💬 KrixBot'
+      },
+      'modal-close': {
+        fr: 'Fermer',
+        en: 'Close',
+        es: 'Cerrar'
+      },
+      // Réseaux sociaux
+      'facebook': {
+        fr: 'Facebook',
+        en: 'Facebook',
+        es: 'Facebook'
+      },
+      'whatsapp': {
+        fr: 'WhatsApp',
+        en: 'WhatsApp',
+        es: 'WhatsApp'
+      },
+      'gmail': {
+        fr: 'Gmail',
+        en: 'Gmail',
+        es: 'Gmail'
+      },
+      // Avis clients
+      'testimonial-1': {
+        fr: '"Professionnel, rapide et efficace. Je recommande Krix Dev les yeux fermés !"',
+        en: '"Professional, fast and efficient. I recommend Krix Dev with my eyes closed!"',
+        es: '"Profesional, rápido y eficiente. ¡Recomiendo Krix Dev con los ojos cerrados!"'
+      },
+      'testimonial-2': {
+        fr: '"Un plaisir de travailler avec lui, toujours à l\'écoute et a le goût du design."',
+        en: '"A pleasure to work with him, always listening and has a taste for design."',
+        es: '"Un placer trabajar con él, siempre atento y tiene gusto por el diseño."'
+      },
+      'testimonial-3': {
+        fr: '"Le site est exactement ce que j\'imaginais, voire mieux ! Merci 🙏"',
+        en: '"The site is exactly what I imagined, if not better! Thank you 🙏"',
+        es: '"El sitio es exactamente lo que imaginaba, ¡si no mejor! Gracias 🙏"'
+      },
+      'testimonial-4': {
+        fr: '"Livraison dans les temps, travail propre. Je reviendrai sans hésiter."',
+        en: '"Delivery on time, clean work. I will return without hesitation."',
+        es: '"Entrega a tiempo, trabajo limpio. Volveré sin dudarlo."'
+      },
+      'testimonial-5': {
+        fr: '"Mon application fonctionne parfaitement, et le design est top !"',
+        en: '"My application works perfectly, and the design is top!"',
+        es: '"Mi aplicación funciona perfectamente, ¡y el diseño es genial!"'
+      },
+      // Catégories des réalisations
+      'cat-web': {
+        fr: 'Site Web',
+        en: 'Web Site',
+        es: 'Sitio Web'
+      },
+      'cat-mobile': {
+        fr: 'App Mobile',
+        en: 'Mobile App',
+        es: 'App Móvil'
+      },
+      'cat-uiux': {
+        fr: 'Maquette UI/UX',
+        en: 'UI/UX Mockup',
+        es: 'Maqueta UI/UX'
+      }
+    };
+    
+    // Fonction améliorée pour traduire tous les éléments
+    function translateAllElements(lang) {
+      // Traduire les éléments avec data-translate
+      const translatableElements = document.querySelectorAll('[data-translate]');
+      translatableElements.forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (newTranslations[key] && newTranslations[key][lang]) {
+          element.textContent = newTranslations[key][lang];
+        }
+      });
+      
+      // Traduire les attributs aria-label
+      const ariaElements = document.querySelectorAll('[data-translate-aria]');
+      ariaElements.forEach(element => {
+        const key = element.getAttribute('data-translate-aria');
+        if (newTranslations[key] && newTranslations[key][lang]) {
+          element.setAttribute('aria-label', newTranslations[key][lang]);
+        }
+      });
+      
+      // Mettre à jour le texte du glitch animated
+      if (slideData[lang]) {
+        currentSlideData = slideData[lang];
+        // Redémarrer l'animation avec les nouvelles données
+        slideIdx = 0;
+        if (slideTextElem) {
+          showSlideText(currentSlideData[0]);
+        }
+      }
+      
+      // Mettre à jour les données des projets
+      if (projetsData[lang]) {
+        currentProjetsData = projetsData[lang];
+      }
+      
+      // Mettre à jour l'attribut lang du HTML
+      document.documentElement.lang = lang;
+    }
+    
+    // Appeler la traduction initiale
+    translateAllElements(currentLanguage);
+    
+    // --- MODAL DE DEVIS ---
+    function setupDevisModal() {
+      const modal = document.getElementById('devisModal');
+      const closeBtn = document.getElementById('devisModalClose');
+      const emailOption = document.querySelector('.email-option');
+      const whatsappOption = document.querySelector('.whatsapp-option');
+      
+      // Gérer tous les boutons de devis
+      const devisButtons = document.querySelectorAll('.devis-btn');
+      
+      devisButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // Sauvegarder le service sélectionné
+          const selectedService = button.getAttribute('data-service') || 'un projet';
+          modal.setAttribute('data-selected-service', selectedService);
+          
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      // Gérer le bouton CTA du header
+      const ctaBtn = document.getElementById('ctaBtn');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // Pour le bouton CTA du header, on utilise un service générique
+          modal.setAttribute('data-selected-service', 'un projet');
+          
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      }
+      
+      // Gérer le bouton "En savoir plus" pour aller à la section à propos
+      const btnMore = document.getElementById('btnMore');
+      if (btnMore) {
+        btnMore.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Navigation vers la section à propos
+          const section = document.getElementById('a-propos');
+          if (section) {
+            const sectionTop = section.offsetTop;
+            const offset = window.innerWidth <= 768 ? 60 : 80;
+            const targetPosition = Math.max(0, sectionTop - offset);
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      }
+      
+      // Fermer la modal avec le bouton X
+      closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      // Fermer la modal en cliquant en dehors
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Fermer la modal avec la touche Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Gestionnaire pour l'option Email
+      emailOption.addEventListener('click', (e) => {
+        e.preventDefault();
+        const selectedService = modal.getAttribute('data-selected-service') || 'un projet';
+        const emailSubject = 'Demande de devis - Portfolio';
+        const emailBody = `Bonjour Christ,
+
+Je souhaite demander un devis pour ${selectedService}.
+
+Pouvez-vous me contacter pour discuter de mes besoins ?
+
+Merci,
+[Votre nom]`;
+        
+        const mailtoLink = `mailto:dolapechrist@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+        window.open(mailtoLink, '_blank');
+        
+        // Fermer la modal après l'ouverture
+        setTimeout(() => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }, 100);
+      });
+      
+      // Gestionnaire pour l'option WhatsApp
+      whatsappOption.addEventListener('click', (e) => {
+        e.preventDefault();
+        const selectedService = modal.getAttribute('data-selected-service') || 'un projet';
+        const whatsappMessage = `Bonjour Christ,
+
+Je souhaite demander un devis pour ${selectedService}.
+
+Pouvez-vous me contacter pour discuter de mes besoins ?
+
+Merci,
+[Votre nom]`;
+        
+        const whatsappLink = `https://wa.me/22999717895?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(whatsappLink, '_blank');
+        
+        // Fermer la modal après l'ouverture
+        setTimeout(() => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }, 100);
+      });
+    }
+    
+          // Initialiser la modal de devis
+      setupDevisModal();
+      
+      // --- ANIMATION BOUTON "ME CONTACTER" ---
+      function setupAboutContactAnimation() {
+        const aboutContactBtn = document.getElementById('aboutContactBtn');
+        const socialIcons = document.querySelector('.social-icons-fixed');
+        
+        if (aboutContactBtn && socialIcons) {
+          aboutContactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Ajouter la classe d'animation
+            socialIcons.classList.add('animate');
+            
+            // Retirer la classe après l'animation
+            setTimeout(() => {
+              socialIcons.classList.remove('animate');
+            }, 800);
+          });
+        }
+      }
+      
+      // Initialiser l'animation du bouton "Me contacter"
+      setupAboutContactAnimation();
+
+    // --- NAVIGATION PAR ANCRES SIMPLIFIÉE ET FONCTIONNELLE ---
+    
+    // Configuration de la navigation
+    const NAV_CONFIG = {
+      offset: 80, // Offset pour compenser la hauteur du header fixe
+      smoothDuration: 800, // Durée de l'animation de scroll
+      activeClass: 'active', // Classe CSS pour le lien actif
+      sections: ['accueil', 'a-propos', 'services', 'avis-clients', 'realisations'] // Sections disponibles
+    };
+
+           // Fonction principale de navigation
+       function initNavigation() {
+     
+         
+         // Récupérer tous les liens de navigation
+         const navLinks = document.querySelectorAll('.nav-link');
+     
+         
+         // Récupérer toutes les sections
+         const sections = document.querySelectorAll('section[id]');
+     
+         
+         // Variable pour désactiver temporairement la mise à jour automatique
+         let isNavigating = false;
+      
+      // Fonction pour naviguer vers une section
+      function navigateToSection(sectionId) {
+
+        
+        const section = document.getElementById(sectionId);
+        if (!section) {
+          console.warn(`❌ Section ${sectionId} non trouvée`);
+          return;
+        }
+
+        // Calculer la position cible avec offset
+        const sectionTop = section.offsetTop;
+        const offset = window.innerWidth <= 768 ? 60 : NAV_CONFIG.offset;
+        const targetPosition = Math.max(0, sectionTop - offset);
+        
+
+        
+        // Smooth scroll
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+
+        // Fermer le menu mobile
+        closeMobileMenu();
+        
+        // Mettre à jour l'URL
+        const newURL = `${window.location.pathname}#${sectionId}`;
+        window.history.replaceState(null, null, newURL);
+      }
+
+             // Fonction pour fermer le menu mobile
+       function closeMobileMenu() {
+         const overlay = document.getElementById('navbarOverlayMenu');
+         const burger = document.getElementById('navbarBurger');
+         
+         if (overlay && overlay.classList.contains('open')) {
+   
+           
+           // Retirer le focus de tous les liens avant de fermer le menu
+           navLinks.forEach(link => link.blur());
+           
+           overlay.classList.remove('open');
+           burger.classList.remove('open');
+           burger.setAttribute('aria-expanded', false);
+           overlay.setAttribute('aria-hidden', true);
+           document.body.classList.remove('menu-open');
+           
+           // Remettre le focus sur le bouton burger après un délai
+           setTimeout(() => {
+             if (burger) burger.focus();
+           }, 100);
+         }
+       }
+
+             // Fonction pour mettre à jour le lien actif
+       function updateActiveNavLink() {
+         // Ne pas mettre à jour si on est en train de naviguer
+         if (isNavigating) {
+   
+           return;
+         }
+         
+         const scrollPosition = window.scrollY;
+         const windowHeight = window.innerHeight;
+         
+         let currentSection = '';
+
+ 
+
+         // Trouver la section actuellement visible
+         sections.forEach(section => {
+           const sectionTop = section.offsetTop;
+           const sectionHeight = section.offsetHeight;
+           const sectionBottom = sectionTop + sectionHeight;
+           
+           // Calculer le centre de la fenêtre
+           const windowCenter = scrollPosition + (windowHeight / 2);
+
+           // Section active si le centre de la fenêtre est dans la section
+           if (windowCenter >= sectionTop && windowCenter <= sectionBottom) {
+             currentSection = section.getAttribute('id');
+     
+           }
+         });
+
+         // Si aucune section n'est détectée, prendre la première visible
+         if (!currentSection) {
+           sections.forEach(section => {
+             const sectionTop = section.offsetTop;
+             const sectionHeight = section.offsetHeight;
+             
+             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+               currentSection = section.getAttribute('id');
+       
+             }
+           });
+         }
+
+ 
+
+         // Mettre à jour les liens actifs seulement si on a trouvé une section
+         if (currentSection) {
+           navLinks.forEach(link => {
+             const href = link.getAttribute('href');
+             const linkTarget = href ? href.substring(1) : '';
+             
+             // Retirer d'abord toutes les classes actives
+             link.classList.remove(NAV_CONFIG.activeClass);
+             
+             if (linkTarget === currentSection) {
+               link.classList.add(NAV_CONFIG.activeClass);
+       
+             }
+           });
+         }
+       }
+
+             // Ajouter les event listeners pour chaque lien
+       navLinks.forEach((link, index) => {
+         const href = link.getAttribute('href');
+         const targetId = href ? href.substring(1) : '';
+         
+ 
+         
+         link.addEventListener('click', (e) => {
+           e.preventDefault();
+   
+           
+           // Test simple pour voir si le scroll fonctionne
+           const section = document.getElementById(targetId);
+           if (section) {
+             
+             
+             // Marquer qu'on est en train de naviguer
+             isNavigating = true;
+     
+             
+             // Forcer l'état actif immédiatement
+     
+             
+             // Retirer toutes les classes actives
+             navLinks.forEach(link => {
+               link.classList.remove(NAV_CONFIG.activeClass);
+             });
+             
+             // Ajouter la classe active au bon lien
+             const activeLink = document.querySelector(`a[href="#${targetId}"]`);
+             if (activeLink) {
+               activeLink.classList.add(NAV_CONFIG.activeClass);
+       
+             }
+             
+             // Calculer la position cible avec offset
+             const sectionTop = section.offsetTop;
+             const offset = window.innerWidth <= 768 ? 60 : 80;
+             const targetPosition = Math.max(0, sectionTop - offset);
+             
+             
+             
+             // Vérifier si le scroll est possible
+             const currentScrollY = window.scrollY;
+             
+             // Scroll avec window.scrollTo pour plus de contrôle
+             window.scrollTo({
+               top: targetPosition,
+               behavior: 'smooth'
+             });
+             
+             // Vérifier si le scroll a fonctionné après un délai
+             setTimeout(() => {
+               const newScrollY = window.scrollY;
+       
+               
+               if (Math.abs(newScrollY - currentScrollY) < 10) {
+         
+                 
+                 // Fallback avec scrollIntoView
+                 section.scrollIntoView({
+                   behavior: 'smooth',
+                   block: 'start'
+                 });
+               }
+             }, 500);
+             
+             // Fermer le menu mobile
+             closeMobileMenu();
+             
+             // Maintenir l'état actif pendant et après le scroll
+             setTimeout(() => {
+               isNavigating = false;
+       
+               
+               // Forcer une dernière fois l'état actif
+               navLinks.forEach(link => {
+                 link.classList.remove(NAV_CONFIG.activeClass);
+               });
+               
+               const finalActiveLink = document.querySelector(`a[href="#${targetId}"]`);
+               if (finalActiveLink) {
+                 finalActiveLink.classList.add(NAV_CONFIG.activeClass);
+         
+               }
+             }, 1000);
+           } else {
+             console.error(`❌ Section non trouvée: ${targetId}`);
+           }
+         });
+       });
+
+             // Écouter le scroll pour mettre à jour le menu actif avec throttling
+       let scrollTimeout;
+       window.addEventListener('scroll', () => {
+         // Ne pas mettre à jour si on est en train de naviguer
+         if (isNavigating) {
+           return;
+         }
+         
+         clearTimeout(scrollTimeout);
+         scrollTimeout = setTimeout(() => {
+           updateActiveNavLink();
+         }, 100); // Throttling pour améliorer les performances
+       });
+
+             // État initial
+       updateActiveNavLink();
+       
+       // Vérifier que le scroll est possible
+       
+       
+       // Gestion du clic sur le logo pour retourner à l'accueil
+       const navbarLogo = document.getElementById('navbarLogo');
+       if (navbarLogo) {
+         navbarLogo.addEventListener('click', () => {
+   
+           
+           // Marquer qu'on est en train de naviguer
+           isNavigating = true;
+           
+           // Forcer l'état actif sur "Accueil"
+           navLinks.forEach(link => {
+             link.classList.remove(NAV_CONFIG.activeClass);
+           });
+           
+           const accueilLink = document.querySelector('a[href="#accueil"]');
+           if (accueilLink) {
+             accueilLink.classList.add(NAV_CONFIG.activeClass);
+     
+           }
+           
+           // Scroll vers l'accueil
+           const accueilSection = document.getElementById('accueil');
+           if (accueilSection) {
+             window.scrollTo({
+               top: 0,
+               behavior: 'smooth'
+             });
+             
+     
+           }
+           
+           // Fermer le menu mobile si ouvert
+           closeMobileMenu();
+           
+           // Réactiver la mise à jour automatique après le scroll
+           setTimeout(() => {
+             isNavigating = false;
+     
+           }, 1000);
+         });
+         
+     
+       }
+       
+       // Forcer une mise à jour après un délai pour s'assurer que tout est bien initialisé
+       setTimeout(() => {
+         updateActiveNavLink();
+       }, 1000);
+      
+      // Navigation vers une section depuis l'URL au chargement
+      const hash = window.location.hash.substring(1);
+      if (hash && NAV_CONFIG.sections.includes(hash)) {
+        setTimeout(() => {
+          navigateToSection(hash);
+        }, 1000);
+      }
+    }
+
+    // Initialiser la navigation au chargement de la page
+    document.addEventListener('DOMContentLoaded', initNavigation);
+
+    // Gestion du bouton KrixBot
+    document.addEventListener('DOMContentLoaded', function() {
+      const krixbotBtn = document.getElementById('krixbot-btn');
+      if (krixbotBtn) {
+        krixbotBtn.addEventListener('click', function() {
+          // Créer l'overlay de page complète
+          const krixbotOverlay = document.createElement('div');
+          krixbotOverlay.id = 'krixbot-overlay';
+          krixbotOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #001c3c 0%, #0b0f1a 50%, #0a2a43 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            backdrop-filter: blur(10px);
+          `;
+          
+          // Créer le contenu central
+          const krixbotContent = document.createElement('div');
+          krixbotContent.style.cssText = `
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 40px;
+            transform: translateY(50px);
+            transition: transform 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          `;
+          
+          // Icône de robot
+          const robotIcon = document.createElement('div');
+          robotIcon.innerHTML = '🤖';
+          robotIcon.style.cssText = `
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: robotPulse 2s infinite;
+            filter: drop-shadow(0 0 20px rgba(19, 143, 243, 0.5));
+          `;
+          
+          // Titre
+          const title = document.createElement('h1');
+          title.style.cssText = `
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #138ff3 0%, #6ec1ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          `;
+          
+          // Message principal
+          const message = document.createElement('p');
+          message.style.cssText = `
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+          `;
+          
+          // Message secondaire
+          const subMessage = document.createElement('p');
+          subMessage.style.cssText = `
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 40px;
+          `;
+          
+          // Bouton de fermeture
+          const closeBtn = document.createElement('button');
+          closeBtn.style.cssText = `
+            background: linear-gradient(135deg, #138ff3 0%, #6ec1ff 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(19, 143, 243, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          `;
+          
+          // Icône de croix avec animation de pulsation
+          const closeIcon = document.createElement('span');
+          closeIcon.innerHTML = '✕';
+          closeIcon.style.cssText = `
+            font-size: 1.2rem;
+            font-weight: bold;
+            animation: closeIconPulse 2s infinite;
+          `;
+          
+          // Texte selon la langue actuelle
+          const currentLang = document.documentElement.lang || 'fr';
+          const texts = {
+            'fr': {
+              title: 'KrixBot en Construction',
+              message: 'Mon assistant IA intelligent est actuellement en cours de développement.',
+              subMessage: 'Une expérience de chat révolutionnaire arrive bientôt !',
+              closeBtn: 'Fermer'
+            },
+            'en': {
+              title: 'KrixBot Under Construction',
+              message: 'My intelligent AI assistant is currently under development.',
+              subMessage: 'A revolutionary chat experience coming soon!',
+              closeBtn: 'Close'
+            },
+            'es': {
+              title: 'KrixBot en Construcción',
+              message: 'Mi asistente de IA inteligente está actualmente en desarrollo.',
+              subMessage: '¡Una experiencia de chat revolucionaria llegará pronto!',
+              closeBtn: 'Cerrar'
+            }
+          };
+          
+          const currentTexts = texts[currentLang] || texts['fr'];
+          
+          title.textContent = currentTexts.title;
+          message.textContent = currentTexts.message;
+          subMessage.textContent = currentTexts.subMessage;
+          
+          // Assembler le bouton avec l'icône et le texte
+          closeBtn.appendChild(closeIcon);
+          closeBtn.appendChild(document.createTextNode(currentTexts.closeBtn));
+          
+          // Assembler le contenu
+          krixbotContent.appendChild(robotIcon);
+          krixbotContent.appendChild(title);
+          krixbotContent.appendChild(message);
+          krixbotContent.appendChild(subMessage);
+          krixbotContent.appendChild(closeBtn);
+          krixbotOverlay.appendChild(krixbotContent);
+          
+          // Ajouter au DOM
+          document.body.appendChild(krixbotOverlay);
+          
+          // Animation d'entrée
+          setTimeout(() => {
+            krixbotOverlay.style.opacity = '1';
+            krixbotContent.style.transform = 'translateY(0)';
+          }, 100);
+          
+          // Gestion du bouton de fermeture
+          closeBtn.addEventListener('click', closeKrixbotOverlay);
+          krixbotOverlay.addEventListener('click', function(e) {
+            if (e.target === krixbotOverlay) {
+              closeKrixbotOverlay();
+            }
+          });
+          
+          // Fermeture avec la touche Escape
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              closeKrixbotOverlay();
+            }
+          });
+          
+          function closeKrixbotOverlay() {
+            krixbotOverlay.style.opacity = '0';
+            krixbotContent.style.transform = 'translateY(50px)';
+            setTimeout(() => {
+              if (krixbotOverlay.parentNode) {
+                krixbotOverlay.parentNode.removeChild(krixbotOverlay);
+              }
+            }, 500);
+          }
+          
+          // Animation CSS pour l'icône de robot et la croix
+          const style = document.createElement('style');
+          style.textContent = `
+            @keyframes robotPulse {
+              0% { 
+                transform: scale(1) rotate(0deg); 
+                filter: drop-shadow(0 0 20px rgba(19, 143, 243, 0.5));
+              }
+              25% { 
+                transform: scale(1.05) rotate(2deg); 
+                filter: drop-shadow(0 0 25px rgba(19, 143, 243, 0.7));
+              }
+              50% { 
+                transform: scale(1.1) rotate(0deg); 
+                filter: drop-shadow(0 0 30px rgba(19, 143, 243, 0.9));
+              }
+              75% { 
+                transform: scale(1.05) rotate(-2deg); 
+                filter: drop-shadow(0 0 25px rgba(19, 143, 243, 0.7));
+              }
+              100% { 
+                transform: scale(1) rotate(0deg); 
+                filter: drop-shadow(0 0 20px rgba(19, 143, 243, 0.5));
+              }
+            }
+            
+            @keyframes closeIconPulse {
+              0% { 
+                transform: scale(1); 
+                opacity: 1;
+              }
+              50% { 
+                transform: scale(1.2); 
+                opacity: 0.8;
+              }
+              100% { 
+                transform: scale(1); 
+                opacity: 1;
+              }
+            }
+          `;
+          document.head.appendChild(style);
+        });
+      }
+    });
+  </script>
+</body>
+</html> 
